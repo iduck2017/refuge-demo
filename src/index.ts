@@ -1,0 +1,15 @@
+export { GameModel } from './model/game';
+export { InventoryModel } from './model/inventory';
+export { BreadModel } from './model/items/bread/index';
+export { ItemModel } from './model/items/index';
+export { MeatModel } from './model/items/meat/index';
+export { RoleAttrsModel } from './model/roles/attrs/index';
+export { StrengthModel } from './model/roles/attrs/strength';
+export { RoleModel } from './model/roles/index';
+export { RoleStateModel } from './model/roles/state/index';
+export { NutritionModel } from './model/roles/state/nutrition';
+export { VitalityModel } from './model/roles/state/vitality/index';
+export { RoleTraitModel } from './model/roles/traits/index';
+export { StarvationModel } from './model/roles/traits/starvation';
+export { TeamModel } from './model/team';
+export { TimerModel } from './model/timer';
