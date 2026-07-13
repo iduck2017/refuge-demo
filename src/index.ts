@@ -13,3 +13,4 @@ export { RoleTraitModel } from './model/roles/traits/index';
 export { StarvationModel } from './model/roles/traits/starvation';
 export { TeamModel } from './model/team';
 export { TimerModel } from './model/timer';
+export { WorkbenchModel } from './model/workbench/index';

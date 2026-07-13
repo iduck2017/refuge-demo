@@ -28,6 +28,7 @@
 - Decorate every getter with `@useMemo()` so dependency collection does not break across getter calls.
 - Wrap event listeners as reusable hooks when traits need to consume those events.
 - Prefer `protected` over `private` for decor, event, and frame listener methods.
+- Decorate Phaser game-object properties owned by views with `@useGraph()`.
 - Write simple getters and setters on one line.
 
 ## Business Rules
