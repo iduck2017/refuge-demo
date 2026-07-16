@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { useView } from 'set-piece';
-import { useGraph, View } from './index';
+import { INK_COLOR, INK_WIDTH, useGraph, View } from './index';
 import type { ViewProps } from './index';
 
 export type ItemViewProps = ViewProps & {
@@ -20,7 +20,7 @@ export class ItemView extends View {
     this._item = this._scene.add
       .rectangle(props.x, props.y, props.size, props.size)
       .setOrigin(0, 0)
-      .setStrokeStyle(1, 0xeeeeee);
+      .setStrokeStyle(INK_WIDTH, INK_COLOR);
     props.parent.add(this._item);
   }
 }

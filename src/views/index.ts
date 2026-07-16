@@ -5,6 +5,9 @@ export type ViewProps = {
   scene: Phaser.Scene;
 };
 
+export const INK_COLOR = 0x5a3d22;
+export const INK_WIDTH = 0.5;
+
 class GraphRegistry {
   private readonly _keys: Map<Function, string[]>;
 

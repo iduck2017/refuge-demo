@@ -21,6 +21,7 @@
 - Write array callbacks such as `forEach`, `find`, and `some` across multiple lines, not as single-line arrow expressions.
 - Encapsulate mutable model state in private `_property` fields. Use public getters and setters for externally readable and writable state.
 - Initialize model state from constructor `props`; do not assign default values directly in property declarations.
+- Keep model constructor `props` optional.
 - Create each new model as a folder with an `index.ts` entry file. Import folder models through explicit `index` paths.
 - Do not add forwarding exports from unrelated or parent module entry files.
 - Do not use TypeScript escape hatches in application code: no definite assignment assertions (`!:`), type assertions (`as`), or `any`.
@@ -33,16 +34,26 @@
 
 ## Business Rules
 
+- An app contains one game.
+- A game contains one regions model.
+- A game contains one signs model.
+- A game contains one tasks model.
 - A game contains one team.
 - A game contains one timer.
+- A regions model contains one refuge and one forest.
+- A signs model contains multiple signs.
+- A tasks model contains multiple tasks.
+- Refuge is the first region on a map.
+- Forest is the second region on a map.
 - A team contains multiple roles.
-- A role contains one root trait exposed as `trait`.
+- A role contains one root traits model exposed as `traits`.
 - A trait can contain multiple nested traits.
 - A role contains one strength.
-- Starvation is implemented as a trait subtype under the default root trait.
+- Starvation is implemented as a trait subtype.
+- Region, item, role, trait, task, and sign base models are abstract.
 
 ## Similar Practice References
 
 - Attribute implementation: `src/model/strength.ts`
 - State implementation: `src/model/starvation.ts`
-- Route helper implementation: `src/model/game.ts`
+- Route helper implementation: `src/model/game/index.ts`

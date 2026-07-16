@@ -1,5 +1,5 @@
 import { NumDecor, useDecorConsumer } from 'set-piece';
-import type { RoleTraitModel } from '../../traits/index';
+import type { RoleTraitModel } from '../../../trait';
 
 export class VitalityMaximumDecor extends NumDecor {}
 export class VitalityOffsetDecor extends NumDecor {}

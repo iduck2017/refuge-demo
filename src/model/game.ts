@@ -7,11 +7,17 @@ import {
   useModel,
 } from 'set-piece';
 import { InventoryModel } from './inventory';
+import { RegionsModel } from './regions';
+import { SignsModel } from './signs';
+import { TasksModel } from './tasks';
 import { TeamModel } from './team';
 import { TimerModel } from './timer';
 
 export type GameProps = {
   inventory?: InventoryModel;
+  regions?: RegionsModel;
+  signs?: SignsModel;
+  tasks?: TasksModel;
   team?: TeamModel;
   timer?: TimerModel;
 };
@@ -29,6 +35,21 @@ export class GameModel extends Model {
   public get inventory() { return this._inventory; }
 
   @useChild()
+  private _regions: RegionsModel;
+  @useMemo()
+  public get regions() { return this._regions; }
+
+  @useChild()
+  private _signs: SignsModel;
+  @useMemo()
+  public get signs() { return this._signs; }
+
+  @useChild()
+  private _tasks: TasksModel;
+  @useMemo()
+  public get tasks() { return this._tasks; }
+
+  @useChild()
   private _timer: TimerModel;
   @useMemo()
   public get timer() { return this._timer; }
@@ -37,6 +58,9 @@ export class GameModel extends Model {
     super();
     this._team = props.team ?? new TeamModel();
     this._inventory = props.inventory ?? new InventoryModel();
+    this._regions = props.regions ?? new RegionsModel();
+    this._signs = props.signs ?? new SignsModel();
+    this._tasks = props.tasks ?? new TasksModel();
     this._timer = props.timer ?? new TimerModel();
   }
 }

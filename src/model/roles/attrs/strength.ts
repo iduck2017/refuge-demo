@@ -14,7 +14,7 @@ export class StrengthModel extends Model {
 
   @useState()
   private _current: number;
-  @useMemo()
+  @useMemo() 
   public get current() { return this._current; }
 
   constructor(props: StrengthProps = {}) {

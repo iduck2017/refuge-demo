@@ -1,5 +1,5 @@
 import { Model, useAction, useChild, useMemo, useModel } from 'set-piece';
-import { ItemModel } from './items/index';
+import { ItemModel } from './item';
 
 export type InventoryProps = {
   items?: ItemModel[];

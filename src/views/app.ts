@@ -17,10 +17,14 @@ const STAGE_MARGIN = 0.05;
 const STAGE_PADDING = 24;
 const PANEL_GAP = 24;
 
+export const APP_BACKGROUND = 'app-background';
+
 @useView()
 export class AppView extends View {
   @useGraph()
   private readonly _backdrop: Phaser.GameObjects.Graphics;
+  @useGraph()
+  private readonly _background: Phaser.GameObjects.Image;
   @useGraph()
   private readonly _stage: Phaser.GameObjects.Container;
   @useChild()
@@ -34,8 +38,6 @@ export class AppView extends View {
 
   constructor(props: ViewProps) {
     super(props);
-    const line = 1;
-    const offset = line / 2;
     const contentWidth = STAGE_WIDTH - STAGE_PADDING * 2 - PANEL_GAP;
     const contentHeight = STAGE_HEIGHT - STAGE_PADDING * 2;
     const illustrationWidth = contentWidth * 0.4;
@@ -52,6 +54,10 @@ export class AppView extends View {
 
     this._backdrop = this._scene.add.graphics();
     this._stage = this._scene.add.container();
+    this._background = this._scene.add.image(0, 0, APP_BACKGROUND);
+    this._background.setOrigin(0);
+    this._background.setDisplaySize(STAGE_WIDTH, STAGE_HEIGHT);
+    this._stage.add(this._background);
     this._illustration = new IllustrationView({
       scene: this._scene,
       parent: this._stage,
@@ -83,16 +89,6 @@ export class AppView extends View {
       width: teamWidth,
       height: inventoryHeight,
     });
-
-    const frame = this._scene.add.graphics();
-    frame.lineStyle(line, 0xeeeeee);
-    frame.strokeRect(
-      offset,
-      offset,
-      STAGE_WIDTH - line,
-      STAGE_HEIGHT - line,
-    );
-    this._stage.add(frame);
   }
 
   public resize(size: Phaser.Structs.Size) {

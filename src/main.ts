@@ -1,11 +1,15 @@
 import Phaser from 'phaser';
-import { AppView } from './views/app';
+import { APP_BACKGROUND, AppView } from './views/app';
 
 class Main extends Phaser.Scene {
   private _app?: AppView;
 
   constructor() {
     super('main');
+  }
+
+  preload() {
+    this.load.image(APP_BACKGROUND, '/app-view.png');
   }
 
   create() {

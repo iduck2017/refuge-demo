@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { useView } from 'set-piece';
-import { useGraph, View } from './index';
+import { INK_COLOR, INK_WIDTH, useGraph, View } from './index';
 import type { ViewProps } from './index';
 
 export type WorkbenchViewProps = ViewProps & {
@@ -21,7 +21,7 @@ export class WorkbenchView extends View {
     this._panel = this._scene.add
       .rectangle(props.x, props.y, props.width, props.height)
       .setOrigin(0, 0)
-      .setStrokeStyle(1, 0xeeeeee);
+      .setStrokeStyle(INK_WIDTH, INK_COLOR);
     props.parent.add(this._panel);
   }
 }
