@@ -1,5 +1,5 @@
 import { Model, useAction, useChild, useMemo, useModel } from 'set-piece';
-import { RoleModel } from './role';
+import { RoleModel } from './roles/index';
 
 export type TeamProps = {
   roles?: RoleModel[];

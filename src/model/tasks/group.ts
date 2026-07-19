@@ -1,5 +1,5 @@
 import { Model, useAction, useChild, useMemo, useModel } from 'set-piece';
-import { TaskModel } from './task';
+import { TaskModel } from './index';
 
 export type TasksProps = {
   tasks?: TaskModel[];

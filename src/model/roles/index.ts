@@ -5,19 +5,19 @@ import {
   useChild,
   useMemo,
 } from 'set-piece';
-import { RoleAttrsModel } from './roles/attrs/index';
-import { RoleStateModel } from './roles/state/index';
-import { TraitsModel } from './traits';
+import { RoleAttrsModel } from './attrs/index';
+import { RoleStateModel } from './state/index';
+import { RoleTraitsModel } from '../traits/role/group';
 
 export type RoleProps = {
   attrs?: RoleAttrsModel;
   state?: RoleStateModel;
-  traits?: TraitsModel;
+  traits?: RoleTraitsModel;
 };
 
 export abstract class RoleModel extends Model {
   @useChild()
-  private _traits?: TraitsModel;
+  private _traits: RoleTraitsModel;
   @useMemo()
   public get traits() { return this._traits; }
 
@@ -33,11 +33,10 @@ export abstract class RoleModel extends Model {
 
   constructor(props: RoleProps = {}) {
     super();
-    this._traits = props.traits;
+    this._traits = props.traits ?? new RoleTraitsModel();
     this._attrs = props.attrs ?? new RoleAttrsModel();
     this._state = props.state ?? new RoleStateModel();
   }
-
 }
 
 export function useRole<

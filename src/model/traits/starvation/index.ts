@@ -1,12 +1,12 @@
 import { useAction, useMemo, useModel, useState } from 'set-piece';
-import { useDayEnd } from '../../../hooks/use-day-end';
-import type { DayEndEvent } from '../../../hooks/use-day-end';
+import { useTimeProceed } from '../../calendar/use-time-proceed';
+import type { TimeProceedEvent } from '../../calendar/use-time-proceed';
 import {
   useVitalityOffset,
   VitalityOffsetDecor,
 } from '../../roles/state/vitality/use-vitality-offset';
-import { RoleTraitModel } from '../../trait';
-import type { RoleTraitProps } from '../../trait';
+import { RoleTraitModel } from '../role/index';
+import type { RoleTraitProps } from '../role/index';
 
 export type StarvationProps = RoleTraitProps & {
   level?: number;
@@ -26,12 +26,14 @@ export class StarvationModel extends RoleTraitModel {
     this._level = Math.min(minimum, 3);
   }
 
-  @useDayEnd()
+  @useTimeProceed()
   @useAction()
-  protected handleDayEnd(_event: DayEndEvent) {
+  protected handleTimeProceed(_event: TimeProceedEvent) {
     const role = this.role;
     const nutrition = role?.state.nutrition;
-    const current = nutrition?.current ?? 0;
+    if (!nutrition) return;
+    nutrition.consume(1);
+    const current = nutrition.current;
     if (current > 0) this._level = 0;
     if (current > 0) return;
     const next = this._level + 1;

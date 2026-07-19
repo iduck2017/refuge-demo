@@ -7,23 +7,26 @@ import {
   useModel,
 } from 'set-piece';
 import { InventoryModel } from './inventory';
-import { RegionsModel } from './regions';
-import { SignsModel } from './signs';
-import { TasksModel } from './tasks';
+import { RegionsModel } from './regions/group';
+import { TasksModel } from './tasks/group';
 import { TeamModel } from './team';
-import { TimerModel } from './timer';
+import { CalendarModel } from './calendar/index';
 
 export type GameProps = {
+  calendar?: CalendarModel;
   inventory?: InventoryModel;
   regions?: RegionsModel;
-  signs?: SignsModel;
   tasks?: TasksModel;
   team?: TeamModel;
-  timer?: TimerModel;
 };
 
 @useModel('game')
 export class GameModel extends Model {
+  @useChild()
+  private _calendar: CalendarModel;
+  @useMemo()
+  public get calendar() { return this._calendar; }
+
   @useChild()
   private _team: TeamModel;
   @useMemo()
@@ -40,28 +43,17 @@ export class GameModel extends Model {
   public get regions() { return this._regions; }
 
   @useChild()
-  private _signs: SignsModel;
-  @useMemo()
-  public get signs() { return this._signs; }
-
-  @useChild()
   private _tasks: TasksModel;
   @useMemo()
   public get tasks() { return this._tasks; }
 
-  @useChild()
-  private _timer: TimerModel;
-  @useMemo()
-  public get timer() { return this._timer; }
-
   constructor(props: GameProps = {}) {
     super();
+    this._calendar = props.calendar ?? new CalendarModel();
     this._team = props.team ?? new TeamModel();
     this._inventory = props.inventory ?? new InventoryModel();
     this._regions = props.regions ?? new RegionsModel();
-    this._signs = props.signs ?? new SignsModel();
     this._tasks = props.tasks ?? new TasksModel();
-    this._timer = props.timer ?? new TimerModel();
   }
 }
 

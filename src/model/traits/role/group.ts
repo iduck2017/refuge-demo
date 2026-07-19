@@ -3,40 +3,31 @@ import {
   useAction,
   useChild,
   useMemo,
-  useState,
+  useModel,
 } from 'set-piece';
-import { GameModel, useGame } from './game';
-import { RoleModel, useRole } from './role';
+import type { RoleTraitModel } from './index';
+import { StarvationModel } from '../starvation/index';
 
-export type RoleTraitProps = {
-  actived?: boolean;
+export type RoleTraitsProps = {
+  starvation?: StarvationModel;
   traits?: RoleTraitModel[];
 };
 
-export abstract class RoleTraitModel extends Model {
-  @useGame()
-  private _game?: GameModel;
+@useModel('role-traits')
+export class RoleTraitsModel extends Model {
+  @useChild()
+  private _starvation: StarvationModel;
   @useMemo()
-  public get game() { return this._game; }
-
-  @useRole()
-  private _role?: RoleModel;
-  @useMemo()
-  public get role() { return this._role; }
-
-  @useState()
-  private _actived: boolean;
-  @useMemo()
-  public get actived() { return this._actived; }
+  public get starvation() { return this._starvation; }
 
   @useChild()
   private _traits: RoleTraitModel[];
   @useMemo()
   public get traits() { return [...this._traits]; }
 
-  constructor(props: RoleTraitProps = {}) {
+  constructor(props: RoleTraitsProps = {}) {
     super();
-    this._actived = props.actived ?? true;
+    this._starvation = props.starvation ?? new StarvationModel();
     this._traits = props.traits ?? [];
   }
 

@@ -3,28 +3,39 @@ import {
   useAction,
   useChild,
   useMemo,
-  useModel,
+  useState,
 } from 'set-piece';
-import type { RoleTraitModel } from './trait';
+import { GameModel, useGame } from '../game';
 
-export type TraitsProps = {
-  traits?: RoleTraitModel[];
+export type TraitProps = {
+  actived?: boolean;
+  traits?: TraitModel[];
 };
 
-@useModel('traits')
-export class TraitsModel extends Model {
+export abstract class TraitModel extends Model {
+  @useGame()
+  private _game?: GameModel;
+  @useMemo()
+  public get game() { return this._game; }
+
+  @useState()
+  private _actived: boolean;
+  @useMemo()
+  public get actived() { return this._actived; }
+
   @useChild()
-  private _traits: RoleTraitModel[];
+  private _traits: TraitModel[];
   @useMemo()
   public get traits() { return [...this._traits]; }
 
-  constructor(props: TraitsProps = {}) {
+  constructor(props: TraitProps = {}) {
     super();
+    this._actived = props.actived ?? true;
     this._traits = props.traits ?? [];
   }
 
   @useAction()
-  public add(trait: RoleTraitModel) {
+  public add(trait: TraitModel) {
     const exists = this._traits.includes(trait);
     const owned = trait.parent === this;
     if (exists && owned) return;
@@ -33,7 +44,7 @@ export class TraitsModel extends Model {
   }
 
   @useAction()
-  public remove(trait: RoleTraitModel) {
+  public remove(trait: TraitModel) {
     const index = this._traits.indexOf(trait);
     if (index < 0) return;
     if (trait.parent !== this) return;

@@ -1,6 +1,6 @@
 import { Model, useChild, useMemo, useModel } from 'set-piece';
-import { ForestModel } from './regions/forest/index';
-import { RefugeModel } from './regions/refuge/index';
+import { ForestModel } from './forest/index';
+import { RefugeModel } from './refuge/index';
 
 export type RegionsProps = {
   forest?: ForestModel;

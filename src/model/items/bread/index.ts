@@ -1,6 +1,6 @@
 import { useAction, useModel } from 'set-piece';
-import { RoleModel } from '../../role';
-import { ItemModel } from '../../item';
+import { RoleModel } from '../../roles/index';
+import { ItemModel } from '../index';
 
 @useModel('bread')
 export class BreadModel extends ItemModel {
