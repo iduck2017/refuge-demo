@@ -1,12 +1,10 @@
 import { useAction, useMemo, useModel, useState } from 'set-piece';
-import { useTimeProceed } from '../../calendar/use-time-proceed';
-import type { TimeProceedEvent } from '../../calendar/use-time-proceed';
 import {
   useVitalityOffset,
   VitalityOffsetDecor,
-} from '../../roles/state/vitality/use-vitality-offset';
-import { RoleTraitModel } from '../role/index';
-import type { RoleTraitProps } from '../role/index';
+} from '../../state/vitality/use-vitality-offset';
+import { RoleTraitModel } from '../index';
+import type { RoleTraitProps } from '../index';
 
 export type StarvationProps = RoleTraitProps & {
   level?: number;
@@ -26,9 +24,9 @@ export class StarvationModel extends RoleTraitModel {
     this._level = Math.min(minimum, 3);
   }
 
-  @useTimeProceed()
   @useAction()
-  protected handleTimeProceed(_event: TimeProceedEvent) {
+  public starve() {
+    if (!this.actived) return;
     const role = this.role;
     const nutrition = role?.state.nutrition;
     if (!nutrition) return;

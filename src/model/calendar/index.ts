@@ -60,9 +60,15 @@ export class CalendarModel extends Model {
     this._year = props.year ?? 1;
   }
 
+  public proceed() {
+    this.dispose();
+    this._proceed()
+    this.starve();
+  }
+
   @useStory()
   @useAction()
-  public proceed() {
+  protected _proceed() {
     const morning = this.time === CalendarTime.Morning;
     if (!morning) this._time = CalendarTime.Morning;
     if (morning) this._time = CalendarTime.Evening;
@@ -74,5 +80,21 @@ export class CalendarModel extends Model {
     }
     const event = new TimeProceedEvent();
     this.emit(event);
+  }
+
+  protected dispose() {
+    const roles = this.game?.team.roles;
+    if (!roles) return;
+    roles.forEach((role) => {
+      role.state.vitality.check();
+    });
+  }
+
+  protected starve() {
+    const roles = this.game?.team.roles;
+    if (!roles) return;
+    roles.forEach((role) => {
+      role.traits.starvation.starve();
+    });
   }
 }

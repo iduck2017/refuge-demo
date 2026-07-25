@@ -1,12 +1,12 @@
 import { Model, useMemo, useModel, useState } from 'set-piece';
 
-export type PriorProps = {
+export type TaskPriorProps = {
   current?: number;
   origin?: number;
 };
 
-@useModel('prior')
-export class PriorModel extends Model {
+@useModel('task-prior')
+export class TaskPriorModel extends Model {
   @useState()
   private readonly _origin: number;
   @useMemo()
@@ -17,7 +17,7 @@ export class PriorModel extends Model {
   @useMemo()
   public get current() { return this._current; }
 
-  constructor(props: PriorProps = {}) {
+  constructor(props: TaskPriorProps = {}) {
     super();
     const origin = props.origin ?? 0;
     this._origin = origin;

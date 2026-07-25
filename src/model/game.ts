@@ -9,7 +9,7 @@ import {
 import { InventoryModel } from './inventory';
 import { RegionsModel } from './regions/group';
 import { TasksModel } from './tasks/group';
-import { TeamModel } from './team';
+import { TeamModel } from './roles/team';
 import { CalendarModel } from './calendar/index';
 
 export type GameProps = {

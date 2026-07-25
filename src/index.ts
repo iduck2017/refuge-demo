@@ -4,7 +4,7 @@ export { GameModel } from './model/game';
 export { InventoryModel } from './model/inventory';
 export { RegionsModel } from './model/regions/group';
 export { TasksModel } from './model/tasks/group';
-export { TeamModel } from './model/team';
+export { TeamModel } from './model/roles/team';
 export { BreadModel } from './model/items/bread/index';
 export { ItemModel } from './model/items/index';
 export { MeatModel } from './model/items/meat/index';
@@ -17,10 +17,15 @@ export { RoleModel } from './model/roles/index';
 export { RoleStateModel } from './model/roles/state/index';
 export { NutritionModel } from './model/roles/state/nutrition';
 export { VitalityModel } from './model/roles/state/vitality/index';
-export { RoleTraitsModel } from './model/traits/role/group';
-export { PriorModel } from './model/tasks/prior/index';
+export { RoleTraitsModel } from './model/roles/trait/group';
+export { TaskPriorModel } from './model/tasks/task-prior/index';
 export { WildFruitSeasonTaskModel } from './model/tasks/wild-fruit-season/index';
+export {
+  WildFruitSeasonTraitModel,
+} from './model/tasks/wild-fruit-season/trait';
 export { TaskModel } from './model/tasks/index';
+export { TaskTraitsModel } from './model/tasks/traits/group';
+export { TaskTraitModel } from './model/tasks/traits/index';
 export { TraitModel } from './model/traits/index';
-export { RoleTraitModel } from './model/traits/role/index';
-export { StarvationModel } from './model/traits/starvation/index';
+export { RoleTraitModel } from './model/roles/trait/index';
+export { StarvationModel } from './model/roles/trait/starvation/index';

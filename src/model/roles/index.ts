@@ -4,14 +4,17 @@ import {
   TypedPropertyDecorator,
   useChild,
   useMemo,
+  useRef,
 } from 'set-piece';
 import { RoleAttrsModel } from './attrs/index';
 import { RoleStateModel } from './state/index';
-import { RoleTraitsModel } from '../traits/role/group';
+import { RoleTraitsModel } from './trait/group';
+import type { TaskModel } from '../tasks/index';
 
 export type RoleProps = {
   attrs?: RoleAttrsModel;
   state?: RoleStateModel;
+  tasks?: TaskModel[];
   traits?: RoleTraitsModel;
 };
 
@@ -20,6 +23,11 @@ export abstract class RoleModel extends Model {
   private _traits: RoleTraitsModel;
   @useMemo()
   public get traits() { return this._traits; }
+
+  @useRef()
+  private _tasks?: TaskModel[];
+  @useMemo()
+  public get tasks() { return [...this._tasks ?? []]; }
 
   @useChild()
   private _attrs: RoleAttrsModel;
@@ -34,6 +42,7 @@ export abstract class RoleModel extends Model {
   constructor(props: RoleProps = {}) {
     super();
     this._traits = props.traits ?? new RoleTraitsModel();
+    this._tasks = props.tasks ?? [];
     this._attrs = props.attrs ?? new RoleAttrsModel();
     this._state = props.state ?? new RoleStateModel();
   }

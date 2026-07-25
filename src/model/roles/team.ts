@@ -1,5 +1,13 @@
-import { Model, useAction, useChild, useMemo, useModel } from 'set-piece';
-import { RoleModel } from './roles/index';
+import {
+  Model,
+  routeRegistry,
+  TypedPropertyDecorator,
+  useAction,
+  useChild,
+  useMemo,
+  useModel,
+} from 'set-piece';
+import { RoleModel } from './index';
 
 export type TeamProps = {
   roles?: RoleModel[];
@@ -27,10 +35,22 @@ export class TeamModel extends Model {
   }
 
   @useAction()
-  public remove(role: RoleModel) {
+  public del(role: RoleModel) {
     const index = this._roles.indexOf(role);
     if (index < 0) return;
     if (role.parent !== this) return;
     this._roles.splice(index, 1);
   }
+}
+
+export function useTeam<
+  I extends Model & Record<string, any>,
+  K extends string,
+>(): I[K] extends TeamModel | undefined ?
+  TypedPropertyDecorator<I, K> :
+  TypedPropertyDecorator<never, never>
+{
+  return function(prototype: I, key: K) {
+    routeRegistry.register(prototype, key, () => TeamModel);
+  };
 }

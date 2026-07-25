@@ -23,7 +23,8 @@
 - Encapsulate mutable model state in private `_property` fields.
 - Do not add setter or setter-like state change methods unless the user explicitly asks for them.
 - Initialize model state from constructor `props`; do not assign default values directly in property declarations.
-- Keep model constructor `props` optional.
+- Keep constructor `props` optional for abstract, base, group, and intentionally configurable models.
+- Final concrete model classes do not define or accept `props`; write their fixed instance values directly in the constructor.
 - Create each new model as a folder with an `index.ts` entry file. Import folder models through explicit `index` paths.
 - Keep singular base models in the plural folder `index.ts`; when a group model exists, keep it in `group.ts`.
 - Do not add forwarding exports from unrelated or parent module entry files.

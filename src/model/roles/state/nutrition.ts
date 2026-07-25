@@ -19,7 +19,7 @@ export class NutritionModel extends Model {
 
   constructor(props: NutritionProps = {}) {
     super();
-    const maximum = props.maximum ?? 5;
+    const maximum = props.maximum ?? 10;
     this._maximum = maximum;
     this._offset = props.offset ?? 0;
   }

@@ -27,7 +27,7 @@ export class InventoryModel extends Model {
   }
 
   @useAction()
-  public remove(item: ItemModel) {
+  public del(item: ItemModel) {
     const index = this._items.indexOf(item);
     if (index < 0) return;
     if (item.parent !== this) return;

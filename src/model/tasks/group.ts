@@ -27,7 +27,7 @@ export class TasksModel extends Model {
   }
 
   @useAction()
-  public remove(task: TaskModel) {
+  public del(task: TaskModel) {
     const index = this._tasks.indexOf(task);
     if (index < 0) return;
     if (task.parent !== this) return;

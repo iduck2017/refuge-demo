@@ -6,7 +6,7 @@ import {
   useModel,
 } from 'set-piece';
 import type { RoleTraitModel } from './index';
-import { StarvationModel } from '../starvation/index';
+import { StarvationModel } from './starvation/index';
 
 export type RoleTraitsProps = {
   starvation?: StarvationModel;
@@ -41,7 +41,7 @@ export class RoleTraitsModel extends Model {
   }
 
   @useAction()
-  public remove(trait: RoleTraitModel) {
+  public del(trait: RoleTraitModel) {
     const index = this._traits.indexOf(trait);
     if (index < 0) return;
     if (trait.parent !== this) return;
