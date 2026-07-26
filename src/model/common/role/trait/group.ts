@@ -9,17 +9,11 @@ import type { RoleTraitModel } from './index';
 import { StarvationModel } from './starvation/index';
 
 export type RoleTraitsProps = {
-  starvation?: StarvationModel;
   traits?: RoleTraitModel[];
 };
 
 @useModel('role-traits')
 export class RoleTraitsModel extends Model {
-  @useChild()
-  private _starvation: StarvationModel;
-  @useMemo()
-  public get starvation() { return this._starvation; }
-
   @useChild()
   private _traits: RoleTraitModel[];
   @useMemo()
@@ -27,8 +21,7 @@ export class RoleTraitsModel extends Model {
 
   constructor(props: RoleTraitsProps = {}) {
     super();
-    this._starvation = props.starvation ?? new StarvationModel();
-    this._traits = props.traits ?? [];
+    this._traits = props.traits ?? [new StarvationModel()];
   }
 
   @useAction()

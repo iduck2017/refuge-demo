@@ -1,4 +1,8 @@
-import { useAction, useMemo, useModel, useState } from 'set-piece';
+import { useMemo, useModel, useState } from 'set-piece';
+import {
+  TimeProceedEvent,
+  useTimeProceed,
+} from '../../../calendar/use-time-proceed';
 import {
   useVitalityOffset,
   VitalityOffsetDecor,
@@ -24,13 +28,11 @@ export class StarvationModel extends RoleTraitModel {
     this._level = Math.min(minimum, 3);
   }
 
-  @useAction()
-  public starve() {
-    if (!this.actived) return;
+  @useTimeProceed()
+  protected starve(_event: TimeProceedEvent) {
     const role = this.role;
     const nutrition = role?.state.nutrition;
     if (!nutrition) return;
-    nutrition.consume(1);
     const current = nutrition.current;
     if (current > 0) this._level = 0;
     if (current > 0) return;

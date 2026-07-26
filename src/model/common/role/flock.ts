@@ -59,7 +59,7 @@ export class FlockModel extends Model {
   @useAction()
   protected starve() {
     this.roles.forEach((role) => {
-      role.traits.starvation.starve();
+      role.state.nutrition.consume();
     });
   }
   

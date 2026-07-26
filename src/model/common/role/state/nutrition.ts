@@ -25,8 +25,8 @@ export class NutritionModel extends Model {
   }
 
   @useAction()
-  public consume(value: number) {
-    this._offset += value;
+  public consume() {
+    this._offset += 1;
   }
 
   @useAction()
