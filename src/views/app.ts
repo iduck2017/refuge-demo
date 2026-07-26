@@ -8,7 +8,7 @@ import {
   InventoryView,
 } from './inventory';
 import { IllustrationView } from './illustration';
-import { teamHeight, TeamView } from './team';
+import { flockHeight, FlockView } from './flock';
 import { WorkbenchView } from './workbench';
 
 const STAGE_WIDTH = 1120;
@@ -30,7 +30,7 @@ export class AppView extends View {
   @useChild()
   private _illustration: IllustrationView;
   @useChild()
-  private _team: TeamView;
+  private _flock: FlockView;
   @useChild()
   private _inventory: InventoryView;
   @useChild()
@@ -41,13 +41,13 @@ export class AppView extends View {
     const contentWidth = STAGE_WIDTH - STAGE_PADDING * 2 - PANEL_GAP;
     const contentHeight = STAGE_HEIGHT - STAGE_PADDING * 2;
     const illustrationWidth = contentWidth * 0.4;
-    const teamWidth = contentWidth - illustrationWidth;
+    const flockWidth = contentWidth - illustrationWidth;
     const rightX = STAGE_PADDING + illustrationWidth + PANEL_GAP;
-    const teamY = STAGE_PADDING;
-    const inventoryY = teamY + teamHeight(teamWidth) + PANEL_GAP;
+    const flockY = STAGE_PADDING;
+    const inventoryY = flockY + flockHeight(flockWidth) + PANEL_GAP;
     const contentBottom = STAGE_HEIGHT - STAGE_PADDING;
     const inventoryHeight = contentBottom - inventoryY;
-    const itemSize = inventoryItemSize(teamWidth, inventoryHeight);
+    const itemSize = inventoryItemSize(flockWidth, inventoryHeight);
     const workbenchHeight = itemSize * 2 + ITEM_GAP;
     const illustrationHeight = contentHeight - workbenchHeight - PANEL_GAP;
     const workbenchY = STAGE_PADDING + illustrationHeight + PANEL_GAP;
@@ -74,19 +74,19 @@ export class AppView extends View {
       width: illustrationWidth,
       height: workbenchHeight,
     });
-    this._team = new TeamView({
+    this._flock = new FlockView({
       scene: this._scene,
       parent: this._stage,
       x: rightX,
-      y: teamY,
-      width: teamWidth,
+      y: flockY,
+      width: flockWidth,
     });
     this._inventory = new InventoryView({
       scene: this._scene,
       parent: this._stage,
       x: rightX,
       y: inventoryY,
-      width: teamWidth,
+      width: flockWidth,
       height: inventoryHeight,
     });
   }

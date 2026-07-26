@@ -1,13 +1,12 @@
-import { useAction, useModel } from 'set-piece';
-import { RoleModel } from '../../roles/index';
-import { ItemModel } from '../index';
+import { useModel } from 'set-piece';
+import { ItemEdibleModel } from '../../common/item/edible/index';
+import { ItemModel } from '../../common/item/index';
 
 @useModel('meat')
 export class MeatModel extends ItemModel {
-  @useAction()
-  public use(role: RoleModel) {
-    const state = role.state;
-    const nutrition = state.nutrition;
-    nutrition.restore(1);
+  constructor() {
+    super({
+      edible: new ItemEdibleModel({ nutrition: 1 }),
+    });
   }
 }

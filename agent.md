@@ -36,11 +36,45 @@
 - Decorate Phaser game-object properties owned by views with `@useGraph()`.
 - Write simple getters on one line.
 
+## Model File Organization Rules
+
+- Keep the application root model at `src/model/app.ts`.
+- Put shared model foundations, abstract models, group models, and reusable
+  child models under `src/model/common/<domain>`.
+- Use a singular domain folder under `common`, such as `common/item`,
+  `common/role`, and `common/task`.
+- Put concrete domain entities under a plural top-level category, such as
+  `items`, `regions`, and `rules`.
+- Give each concrete entity or feature its own singular kebab-case folder, such
+  as `items/bread`, `regions/forest`, and `rules/wild-fruit-season`.
+- Keep a feature-specific model inside its owning feature folder. For example,
+  keep the event and task used only by `wild-fruit-season` beside that rule.
+- Mirror ownership with nested folders. For example, role state models belong
+  under `common/role/state`, and role trait models belong under
+  `common/role/trait`.
+- Give reusable capability models their own folders under the owning domain,
+  such as `common/item/edible/index.ts`.
+- Use `index.ts` for the primary model of a folder.
+- Use `group.ts` for the model that owns a collection of the folder's primary
+  models.
+- Keep small supporting models in descriptively named sibling files. Promote a
+  supporting model to its own folder when it gains its own children or related
+  files.
+- Import folder models through explicit `index` paths.
+- Do not add forwarding exports to parent model folders. Export public models
+  only from the package entry point when external access is required.
+- Keep each model in one canonical location. Do not duplicate shared models
+  inside concrete entity folders.
+- Move a model into `common` only when it defines shared domain structure or is
+  reused by multiple concrete models. Keep concrete gameplay content out of
+  `common`.
+
 ## Business Rules
 
 - An app contains one game.
 - A game contains one regions model.
 - A game contains one tasks model.
+- A game contains one events model.
 - A game contains one team.
 - A game contains one calendar.
 - A calendar has 60 days per year.
@@ -52,6 +86,7 @@
 - A task controls availability through its actived state.
 - A task contains one prior attribute.
 - Tasks update availability by consuming time proceed events.
+- An event model represents a gameplay event, not a code-level event.
 - Sloe can be harvested during spring days 15 through 25.
 - Refuge is the first region on a map.
 - Forest is the second region on a map.
@@ -59,6 +94,7 @@
 - A role contains one root traits model exposed as `traits`.
 - A role traits model contains one starvation trait.
 - `RoleTraitModel` extends `TraitModel` and only adds the role relation.
+- A role can handle only one task at the same time.
 - A trait can contain multiple nested traits.
 - A role contains one strength.
 - Starvation is implemented as a trait subtype.
