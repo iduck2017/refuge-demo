@@ -7,17 +7,24 @@ import {
   useMemo,
   useRef,
 } from 'set-piece';
+import { ItemGroupModel } from '../item/group';
 import { RoleStateModel } from './state/index';
 import { RoleTraitsModel } from './trait/group';
 import type { TaskModel } from '../task/index';
 
 export type RoleProps = {
+  items?: ItemGroupModel;
   state?: RoleStateModel;
   task?: TaskModel;
   traits?: RoleTraitsModel;
 };
 
 export abstract class RoleModel extends Model {
+  @useChild()
+  private _items: ItemGroupModel;
+  @useMemo()
+  public get items() { return this._items; }
+
   @useChild()
   private _traits: RoleTraitsModel;
   @useMemo()
@@ -41,6 +48,7 @@ export abstract class RoleModel extends Model {
 
   constructor(props: RoleProps = {}) {
     super();
+    this._items = props.items ?? new ItemGroupModel();
     this._traits = props.traits ?? new RoleTraitsModel();
     this._task = props.task;
     this._state = props.state ?? new RoleStateModel();

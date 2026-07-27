@@ -1,9 +1,9 @@
-export { AppModel } from './model/app';
+export { AppModel } from './app';
 export { CalendarModel } from './model/common/calendar/index';
 export { EventModel } from './model/common/event/index';
 export { EventsModel } from './model/common/event/group';
 export { GameModel } from './model/common/game';
-export { InventoryModel } from './model/common/item/inventory';
+export { ItemGroupModel } from './model/common/item/group';
 export { RegionsModel } from './model/regions/group';
 export { RuleModel } from './model/common/rule/index';
 export { RulesModel } from './model/common/rule/group';

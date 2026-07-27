@@ -72,11 +72,13 @@
 ## Business Rules
 
 - An app contains one game.
+- An app can contain one app view.
 - A game contains one regions model.
 - A game contains one tasks model.
 - A game contains one events model.
 - A game contains one team.
 - A game contains one calendar.
+- A game starts with two bread items.
 - A calendar has 60 days per year.
 - Each calendar proceed advances half a day.
 - Each calendar proceed emits a time proceed event.
@@ -96,6 +98,9 @@
 - `RoleTraitModel` extends `TraitModel` and only adds the role relation.
 - A role can handle only one task at the same time.
 - A trait can contain multiple nested traits.
+- An item group has a size and rejects items when it is full.
+- An item has a name.
+- A role contains one item group.
 - A role contains one strength.
 - Starvation is implemented as a trait subtype.
 - Starvation consumes role nutrition on each time proceed and updates its level from remaining nutrition.

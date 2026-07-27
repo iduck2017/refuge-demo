@@ -21,7 +21,12 @@ export class RoleTraitsModel extends Model {
 
   constructor(props: RoleTraitsProps = {}) {
     super();
-    this._traits = props.traits ?? [new StarvationModel()];
+    const traits = props.traits ?? [];
+    const starvation = traits.some((trait) => {
+      return trait instanceof StarvationModel;
+    });
+    this._traits = traits;
+    if (!starvation) this._traits.push(new StarvationModel())
   }
 
   @useAction()

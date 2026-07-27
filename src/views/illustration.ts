@@ -5,7 +5,6 @@ import type { ViewProps } from './index';
 
 export type IllustrationViewProps = ViewProps & {
   height: number;
-  parent: Phaser.GameObjects.Container;
   width: number;
   x: number;
   y: number;
@@ -22,6 +21,5 @@ export class IllustrationView extends View {
       .rectangle(props.x, props.y, props.width, props.height)
       .setOrigin(0, 0)
       .setStrokeStyle(INK_WIDTH, INK_COLOR);
-    props.parent.add(this._panel);
   }
 }

@@ -1,8 +1,16 @@
 import Phaser from 'phaser';
-import { APP_BACKGROUND, AppView } from './views/app';
+import { AppModel } from './app';
+import { GameModel } from './model/common/game';
+import {
+  APP_BACKGROUND,
+  AppView,
+  STAGE_HEIGHT,
+  STAGE_MARGIN,
+  STAGE_WIDTH,
+} from './views/app';
 
 class Main extends Phaser.Scene {
-  private _app?: AppView;
+  private _app?: AppModel;
 
   constructor() {
     super('main');
@@ -13,34 +21,70 @@ class Main extends Phaser.Scene {
   }
 
   create() {
-    this._app = new AppView({ scene: this });
-    this._app.resize(this.scale.gameSize);
+    const zoom = this.applyCamera();
+    const game = new GameModel();
+    const view = new AppView({
+      scene: this,
+      items: game.items,
+    });
+    this._app = new AppModel({ game, view });
+    view.resize(zoom);
     this.scale.on(Phaser.Scale.Events.RESIZE, this.resize, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.shutdown, this);
   }
 
-  private resize(size: Phaser.Structs.Size) {
-    this._app?.resize(size);
+  private resize() {
+    const zoom = this.applyCamera();
+    this._app?.view?.resize(zoom);
+  }
+
+  private applyCamera() {
+    const availableWidth = this.scale.width * (1 - STAGE_MARGIN * 2);
+    const availableHeight = this.scale.height * (1 - STAGE_MARGIN * 2);
+    const widthZoom = availableWidth / STAGE_WIDTH;
+    const heightZoom = availableHeight / STAGE_HEIGHT;
+    const zoom = Math.min(widthZoom, heightZoom);
+    const width = STAGE_WIDTH * zoom;
+    const height = STAGE_HEIGHT * zoom;
+    const x = Math.round((this.scale.width - width) / 2);
+    const y = Math.round((this.scale.height - height) / 2);
+    const camera = this.cameras.main;
+    camera.setViewport(x, y, width, height);
+    camera.setOrigin(0, 0);
+    camera.setZoom(zoom);
+    camera.setScroll(0, 0);
+    return zoom;
   }
 
   private shutdown() {
     this.scale.off(Phaser.Scale.Events.RESIZE, this.resize, this);
-    this._app?.destroy();
+    this._app?.view?.destroy();
     this._app = undefined;
   }
 }
 
+const initialDpr = window.devicePixelRatio;
+
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  backgroundColor: '#1d1f27',
+  backgroundColor: '#11131a',
   scale: {
     parent: 'game',
-    mode: Phaser.Scale.RESIZE,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: window.innerWidth,
-    height: window.innerHeight,
+    mode: Phaser.Scale.NONE,
+    width: window.innerWidth * initialDpr,
+    height: window.innerHeight * initialDpr,
+    zoom: 1 / initialDpr,
   },
   scene: [Main],
 };
 
-new Phaser.Game(config);
+const game = new Phaser.Game(config);
+
+window.addEventListener('resize', () => {
+  const dpr = window.devicePixelRatio;
+  game.scale.resize(
+    window.innerWidth * dpr,
+    window.innerHeight * dpr,
+  );
+  game.scale.setZoom(1 / dpr);
+});

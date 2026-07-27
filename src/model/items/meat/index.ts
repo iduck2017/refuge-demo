@@ -7,6 +7,7 @@ export class MeatModel extends ItemModel {
   constructor() {
     super({
       edible: new ItemEdibleModel({ nutrition: 1 }),
+      name: 'Meat',
     });
   }
 }

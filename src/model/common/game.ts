@@ -7,13 +7,15 @@ import {
   useMemo,
   useModel,
 } from 'set-piece';
-import { InventoryModel } from './item/inventory';
+import { ItemGroupModel } from './item/group';
+import { BreadModel } from '../items/bread/index';
 import { RegionsModel } from '../regions/group';
 import { TasksModel } from './task/group';
 import { FlockModel } from './role/flock';
 import { CalendarModel } from './calendar/index';
 import { EventsModel } from './event/group';
 import { RulesModel } from './rule/group';
+import { MeatModel } from '../items/meat';
 
 @useModel('game')
 export class GameModel extends Model {
@@ -33,9 +35,9 @@ export class GameModel extends Model {
   public get flock() { return this._flock; }
 
   @useChild()
-  private _inventory: InventoryModel;
+  private _items: ItemGroupModel;
   @useMemo()
-  public get inventory() { return this._inventory; }
+  public get items() { return this._items; }
 
   @useChild()
   private _regions: RegionsModel;
@@ -57,7 +59,12 @@ export class GameModel extends Model {
     this._calendar = new CalendarModel();
     this._events = new EventsModel();
     this._flock = new FlockModel();
-    this._inventory = new InventoryModel();
+    this._items = new ItemGroupModel({
+      items: [
+        new BreadModel(),
+        new MeatModel(),
+      ],
+    });
     this._regions = new RegionsModel();
     this._rules = new RulesModel();
     this._tasks = new TasksModel();

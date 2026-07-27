@@ -12,10 +12,9 @@ export class WildFruitSeasonTaskModel extends TaskModel {
   }
 
   public proceed() {
-    const game = this.game;
-    if (!game) return;
-    const inventory = game.inventory;
-    const raspberry = new RaspberryModel();
-    inventory.add(raspberry);
+    this.roles.forEach((role) => {
+      const raspberry = new RaspberryModel();
+      role.items.add(raspberry);
+    });
   }
 }

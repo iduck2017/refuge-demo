@@ -23,7 +23,7 @@ async function main() {
   await ctx.watch();
   const server = await ctx.serve({
     servedir: 'public',
-    port: 8080,
+    port: 8081,
   });
   const host = server.host === '0.0.0.0' ? 'localhost' : server.host;
   const url = `http://${host}:${server.port}`;

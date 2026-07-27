@@ -22,9 +22,4 @@ export class ItemEdibleModel extends Model {
     const nutrition = role.state.nutrition;
     nutrition.restore(this.nutrition);
   }
-
-  @useAction()
-  public use(role: RoleModel) {
-    this.consume(role);
-  }
 }
