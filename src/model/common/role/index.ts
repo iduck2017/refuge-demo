@@ -19,6 +19,10 @@ export type RoleProps = {
   traits?: RoleTraitsModel;
 };
 
+/**
+ * Base class for a playable role with inventory, traits, state, and task
+ * assignment.
+ */
 export abstract class RoleModel extends Model {
   @useChild()
   private _items: ItemGroupModel;
@@ -46,6 +50,11 @@ export abstract class RoleModel extends Model {
   @useMemo()
   public get state() { return this._state; }
 
+  /**
+   * Create a role with optional custom inventory, traits, task, and state.
+   *
+   * @param props - Role configuration.
+   */
   constructor(props: RoleProps = {}) {
     super();
     this._items = props.items ?? new ItemGroupModel();
@@ -56,6 +65,11 @@ export abstract class RoleModel extends Model {
 
 }
 
+/**
+ * Create a property decorator that routes to the nearest role ancestor.
+ *
+ * @returns Typed decorator for an optional `RoleModel` property.
+ */
 export function useRole<
   I extends Model & Record<string, any>,
   K extends string,

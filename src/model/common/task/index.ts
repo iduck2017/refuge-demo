@@ -18,6 +18,9 @@ export type TaskProps = {
   traits?: TaskTraitsModel;
 };
 
+/**
+ * Base class for work that can bind roles and advance each turn.
+ */
 export abstract class TaskModel extends Model {
   @useGame()
   private _game?: GameModel;
@@ -39,6 +42,11 @@ export abstract class TaskModel extends Model {
   @useMemo()
   public get prior() { return this._prior; }
 
+  /**
+   * Create a task with optional roles, traits, and priority.
+   *
+   * @param props - Task configuration.
+   */
   constructor(props: TaskProps = {}) {
     super();
     this._roles = props.roles ?? [];
@@ -46,8 +54,19 @@ export abstract class TaskModel extends Model {
     this._prior = props.prior ?? new TaskPriorModel();
   }
 
+  /**
+   * Advance task-specific work for one turn.
+   *
+   * @returns Nothing.
+   */
   public abstract proceed(): void;
 
+  /**
+   * Assign every currently unoccupied role in the input collection.
+   *
+   * @param roles - Roles to assign.
+   * @returns Nothing.
+   */
   @useAction()
   public bind(roles: RoleModel[]) {
     if (!this._roles) this._roles = [];
@@ -59,6 +78,12 @@ export abstract class TaskModel extends Model {
     });
   }
 
+  /**
+   * Remove this task from each matching role in the input collection.
+   *
+   * @param roles - Roles to unassign.
+   * @returns Nothing.
+   */
   @useAction()
   public unbind(roles: RoleModel[]) {
     if (!this._roles) this._roles = [];
@@ -71,6 +96,11 @@ export abstract class TaskModel extends Model {
   }
 }
 
+/**
+ * Create a property decorator that routes to the nearest task ancestor.
+ *
+ * @returns Typed decorator for an optional `TaskModel` property.
+ */
 export function useTask<
   I extends Model & Record<string, any>,
   K extends string,

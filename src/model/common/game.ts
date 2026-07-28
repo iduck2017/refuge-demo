@@ -17,6 +17,9 @@ import { EventsModel } from './event/group';
 import { RulesModel } from './rule/group';
 import { MeatModel } from '../items/meat';
 
+/**
+ * Aggregates all top-level domain collections and services for one game.
+ */
 @useModel('game')
 export class GameModel extends Model {
   @useChild()
@@ -54,6 +57,9 @@ export class GameModel extends Model {
   @useMemo()
   public get tasks() { return this._tasks; }
 
+  /**
+   * Create a game with its default calendar, collections, regions, and items.
+   */
   constructor() {
     super();
     this._calendar = new CalendarModel();
@@ -72,6 +78,11 @@ export class GameModel extends Model {
 
 }
 
+/**
+ * Create a property decorator that routes to the nearest game ancestor.
+ *
+ * @returns Typed decorator for an optional `GameModel` property.
+ */
 export function useGame<
   I extends Model & Record<string, any>,
   K extends string,

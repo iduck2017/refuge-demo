@@ -5,6 +5,9 @@ export type StrengthProps = {
   origin?: number;
 };
 
+/**
+ * Stores a role's baseline and current strength values.
+ */
 @useModel('strength')
 export class StrengthModel extends Model {
   @useState()
@@ -17,6 +20,11 @@ export class StrengthModel extends Model {
   @useMemo()
   public get current() { return this._current; }
 
+  /**
+   * Create strength state from optional baseline and current values.
+   *
+   * @param props - Strength configuration.
+   */
   constructor(props: StrengthProps = {}) {
     super();
     const origin = props.origin ?? 0;

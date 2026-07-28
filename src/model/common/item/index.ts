@@ -13,6 +13,9 @@ export type ItemProps = {
   name?: string;
 };
 
+/**
+ * Base class for named inventory items with optional edible behavior.
+ */
 export abstract class ItemModel extends Model {
   @useRoute(() => ItemGroupModel)
   private _container?: ItemGroupModel;
@@ -29,6 +32,11 @@ export abstract class ItemModel extends Model {
   @useMemo()
   public get edible() { return this._edible; }
 
+  /**
+   * Create an item with optional name and edible behavior.
+   *
+   * @param props - Item configuration.
+   */
   constructor(props: ItemProps = {}) {
     super();
     this._name = props.name ?? '';

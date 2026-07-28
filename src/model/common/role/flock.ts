@@ -13,6 +13,9 @@ export type FlockProps = {
   roles?: RoleModel[];
 };
 
+/**
+ * Owns the active roles and advances their survival state each turn.
+ */
 @useModel('flock')
 export class FlockModel extends Model {
   @useChild()
@@ -20,11 +23,22 @@ export class FlockModel extends Model {
   @useMemo()
   public get roles() { return [...this._roles]; }
 
+  /**
+   * Create a flock with optional initial roles.
+   *
+   * @param props - Initial role collection.
+   */
   constructor(props: FlockProps = {}) {
     super();
     this._roles = props.roles ?? [];
   }
 
+  /**
+   * Add an unowned role if it is not already in the flock.
+   *
+   * @param role - Role to add.
+   * @returns Nothing.
+   */
   @useAction()
   public add(role: RoleModel) {
     const exists = this._roles.includes(role);
@@ -34,6 +48,12 @@ export class FlockModel extends Model {
     this._roles.push(role);
   }
 
+  /**
+   * Remove a role owned by this flock.
+   *
+   * @param role - Role to remove.
+   * @returns Nothing.
+   */
   @useAction()
   public del(role: RoleModel) {
     const index = this._roles.indexOf(role);
@@ -42,6 +62,11 @@ export class FlockModel extends Model {
     this._roles.splice(index, 1);
   }
 
+  /**
+   * Advance vitality, starvation, and dining behavior for all roles.
+   *
+   * @returns Nothing.
+   */
   @useAction()
   public proceed() {
     this.dispose();
@@ -49,6 +74,11 @@ export class FlockModel extends Model {
     this.dining()
   }
 
+  /**
+   * Check each role for vitality-based removal.
+   *
+   * @returns Nothing.
+   */
   @useAction()
   protected dispose() {
     this.roles.forEach((role) => {
@@ -56,16 +86,31 @@ export class FlockModel extends Model {
     });
   }
 
+  /**
+   * Consume one nutrition unit for each active role.
+   *
+   * @returns Nothing.
+   */
   @useAction()
   protected starve() {
     this.roles.forEach((role) => {
       role.state.nutrition.consume();
     });
   }
-  
+
+  /**
+   * Resolve role dining behavior for the current turn.
+   *
+   * @returns Nothing.
+   */
   protected dining() {}
 }
 
+/**
+ * Create a property decorator that routes to the nearest flock ancestor.
+ *
+ * @returns Typed decorator for an optional `FlockModel` property.
+ */
 export function useFlock<
   I extends Model & Record<string, any>,
   K extends string,

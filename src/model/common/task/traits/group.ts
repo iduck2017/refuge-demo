@@ -11,6 +11,9 @@ export type TaskTraitsProps = {
   traits?: TaskTraitModel[];
 };
 
+/**
+ * Owns the traits that modify a task.
+ */
 @useModel('task-traits')
 export class TaskTraitsModel extends Model {
   @useChild()
@@ -18,11 +21,22 @@ export class TaskTraitsModel extends Model {
   @useMemo()
   public get traits() { return [...this._traits]; }
 
+  /**
+   * Create a task trait collection with optional initial traits.
+   *
+   * @param props - Initial task traits.
+   */
   constructor(props: TaskTraitsProps = {}) {
     super();
     this._traits = props.traits ?? [];
   }
 
+  /**
+   * Add an unowned trait if it is not already in the collection.
+   *
+   * @param trait - Task trait to add.
+   * @returns Nothing.
+   */
   @useAction()
   public add(trait: TaskTraitModel) {
     const exists = this._traits.includes(trait);
@@ -32,6 +46,12 @@ export class TaskTraitsModel extends Model {
     this._traits.push(trait);
   }
 
+  /**
+   * Remove a trait owned by this collection.
+   *
+   * @param trait - Task trait to remove.
+   * @returns Nothing.
+   */
   @useAction()
   public del(trait: TaskTraitModel) {
     const index = this._traits.indexOf(trait);

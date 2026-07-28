@@ -11,6 +11,9 @@ export type TasksProps = {
   items?: TaskModel[];
 };
 
+/**
+ * Owns and advances the game's active tasks.
+ */
 @useModel('tasks')
 export class TasksModel extends Model {
   @useChild()
@@ -18,11 +21,21 @@ export class TasksModel extends Model {
   @useMemo()
   public get items() { return [...this._items]; }
 
+  /**
+   * Create a task collection with optional initial tasks.
+   *
+   * @param props - Initial task collection.
+   */
   constructor(props: TasksProps = {}) {
     super();
     this._items = props.items ?? [];
   }
 
+  /**
+   * Advance every active task by one turn.
+   *
+   * @returns Nothing.
+   */
   @useAction()
   public proceed() {
     this.items.forEach((task) => {
@@ -30,6 +43,12 @@ export class TasksModel extends Model {
     });
   }
 
+  /**
+   * Add an unowned task if it is not already active.
+   *
+   * @param task - Task to add.
+   * @returns Nothing.
+   */
   @useAction()
   public add(task: TaskModel) {
     const exists = this._items.includes(task);
@@ -39,6 +58,12 @@ export class TasksModel extends Model {
     this._items.push(task);
   }
 
+  /**
+   * Remove a task owned by this collection.
+   *
+   * @param task - Task to remove.
+   * @returns Nothing.
+   */
   @useAction()
   public del(task: TaskModel) {
     const index = this._items.indexOf(task);

@@ -15,6 +15,9 @@ export type ItemGroupProps = {
   size?: number;
 };
 
+/**
+ * Owns an ordered, capacity-limited collection of items.
+ */
 @useModel('item-group')
 export class ItemGroupModel extends Model {
   @useState()
@@ -28,6 +31,11 @@ export class ItemGroupModel extends Model {
   @useMemo()
   public get items() { return [...this._items]; }
 
+  /**
+   * Create an item group with normalized capacity and optional contents.
+   *
+   * @param props - Initial items and capacity.
+   */
   constructor(props: ItemGroupProps = {}) {
     super();
     const size = props.size ?? Infinity;
@@ -35,7 +43,15 @@ export class ItemGroupModel extends Model {
     this._items = props.items ?? [];
   }
 
-  
+  /**
+   * Insert or move an item into the requested position.
+   *
+   * Transfers from another group are rejected when this group is full.
+   *
+   * @param item - Item to insert.
+   * @param index - Optional insertion index; invalid values append.
+   * @returns Nothing.
+   */
   @useAction()
   public add(item: ItemModel, index?: number) {
     const container = item.container;
@@ -53,6 +69,12 @@ export class ItemGroupModel extends Model {
     this._items.splice(index, 0, item);
   }
 
+  /**
+   * Remove an item from this group.
+   *
+   * @param item - Item to remove.
+   * @returns Nothing.
+   */
   @useAction()
   public del(item: ItemModel) {
     const index = this._items.indexOf(item);

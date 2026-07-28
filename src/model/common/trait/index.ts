@@ -11,6 +11,9 @@ export type TraitProps = {
   actived?: boolean;
 };
 
+/**
+ * Base class for game-routed behaviors that can be activated or disabled.
+ */
 export abstract class TraitModel extends Model {
   @useGame()
   private _game?: GameModel;
@@ -23,6 +26,11 @@ export abstract class TraitModel extends Model {
   @useMemo()
   public get actived() { return this._actived; }
 
+  /**
+   * Create a trait with optional activation state.
+   *
+   * @param props - Trait configuration.
+   */
   constructor(props: TraitProps = {}) {
     super();
     this._actived = props.actived ?? true;

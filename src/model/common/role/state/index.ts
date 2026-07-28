@@ -9,6 +9,9 @@ export type RoleStateProps = {
   vitality?: VitalityModel;
 };
 
+/**
+ * Aggregates a role's strength, nutrition, and vitality state.
+ */
 @useModel('role-state')
 export class RoleStateModel extends Model {
   @useChild()
@@ -26,6 +29,11 @@ export class RoleStateModel extends Model {
   @useMemo()
   public get vitality() { return this._vitality; }
 
+  /**
+   * Create role state with supplied or default component models.
+   *
+   * @param props - Optional state components.
+   */
   constructor(props: RoleStateProps = {}) {
     super();
     this._strength = props.strength ?? new StrengthModel();

@@ -12,6 +12,9 @@ import {
 
 export type RoleTraitProps = TraitProps;
 
+/**
+ * Base class for traits routed to their owning role and flock.
+ */
 export abstract class RoleTraitModel extends TraitModel {
   @useRole()
   private _role?: RoleModel;
@@ -23,6 +26,11 @@ export abstract class RoleTraitModel extends TraitModel {
   @useMemo()
   public get flock() { return this._flock; }
 
+  /**
+   * Create a role trait with optional activation state.
+   *
+   * @param props - Role trait configuration.
+   */
   constructor(props: RoleTraitProps = {}) {
     super(props);
   }

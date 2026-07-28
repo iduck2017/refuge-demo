@@ -19,6 +19,10 @@ export enum CalendarSeason {
   Winter = 'winter',
 }
 
+/**
+ * Tracks the current half-day and derives calendar date, time, year, and
+ * season values.
+ */
 @useModel('calendar')
 export class CalendarModel extends Model {
   @useGame()
@@ -56,11 +60,19 @@ export class CalendarModel extends Model {
     return CalendarSeason.Winter;
   }
 
+  /**
+   * Create a calendar at the first morning of the first year.
+   */
   constructor() {
     super();
     this._current = 1;
   }
 
+  /**
+   * Advance all time-sensitive systems through one half-day.
+   *
+   * @returns Nothing.
+   */
   public proceed() {
     const game = this.game;
     game?.flock.proceed();
@@ -69,6 +81,11 @@ export class CalendarModel extends Model {
     game?.events.proceed();
   }
 
+  /**
+   * Increment calendar state and emit the time-proceeded event.
+   *
+   * @returns Nothing.
+   */
   @useStory()
   @useAction()
   protected _proceed() {

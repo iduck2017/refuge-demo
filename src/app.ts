@@ -7,6 +7,9 @@ export type AppProps = {
   view?: AppView;
 };
 
+/**
+ * Owns the root game model and its optional Phaser view.
+ */
 @useModel('app')
 export class AppModel extends Model {
   @useChild()
@@ -19,6 +22,11 @@ export class AppModel extends Model {
   @useMemo()
   public get view() { return this._view; }
 
+  /**
+   * Create an application around the supplied or default game state.
+   *
+   * @param props - Optional game and view instances.
+   */
   constructor(props: AppProps = {}) {
     super();
     this._game = props.game ?? new GameModel();

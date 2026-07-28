@@ -12,6 +12,9 @@ export type RoleTraitsProps = {
   traits?: RoleTraitModel[];
 };
 
+/**
+ * Owns a role's traits and guarantees a starvation trait is present.
+ */
 @useModel('role-traits')
 export class RoleTraitsModel extends Model {
   @useChild()
@@ -19,6 +22,12 @@ export class RoleTraitsModel extends Model {
   @useMemo()
   public get traits() { return [...this._traits]; }
 
+  /**
+   * Create a role trait collection and add default starvation behavior when
+   * missing.
+   *
+   * @param props - Initial role traits.
+   */
   constructor(props: RoleTraitsProps = {}) {
     super();
     const traits = props.traits ?? [];
@@ -29,6 +38,12 @@ export class RoleTraitsModel extends Model {
     if (!starvation) this._traits.push(new StarvationModel())
   }
 
+  /**
+   * Add an unowned trait if it is not already in the collection.
+   *
+   * @param trait - Role trait to add.
+   * @returns Nothing.
+   */
   @useAction()
   public add(trait: RoleTraitModel) {
     const exists = this._traits.includes(trait);
@@ -38,6 +53,12 @@ export class RoleTraitsModel extends Model {
     this._traits.push(trait);
   }
 
+  /**
+   * Remove a trait owned by this collection.
+   *
+   * @param trait - Role trait to remove.
+   * @returns Nothing.
+   */
   @useAction()
   public del(trait: RoleTraitModel) {
     const index = this._traits.indexOf(trait);

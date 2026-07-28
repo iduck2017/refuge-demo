@@ -6,6 +6,12 @@ import { RoleAvatarView } from './role-avatar';
 const ROLE_GAP = 8;
 const ROLE_COUNT = 6;
 
+/**
+ * Calculate the height of a six-column role row.
+ *
+ * @param width - Available row width.
+ * @returns Rounded role-card height using a 3:4 width-to-height ratio.
+ */
 export function flockHeight(width: number) {
   const gaps = ROLE_GAP * (ROLE_COUNT - 1);
   const roleWidth = Math.floor((width - gaps) / ROLE_COUNT);
@@ -18,11 +24,19 @@ export type FlockViewProps = ViewProps & {
   y: number;
 };
 
+/**
+ * Displays a fixed row of role avatar slots using local Container coordinates.
+ */
 @useView()
 export class FlockView extends View {
   @useChild()
   private _roles: RoleAvatarView[];
 
+  /**
+   * Create and evenly distribute six role avatar views.
+   *
+   * @param props - Local position and available row width.
+   */
   constructor(props: FlockViewProps) {
     super(props);
     const gaps = ROLE_GAP * (ROLE_COUNT - 1);
@@ -32,11 +46,10 @@ export class FlockView extends View {
 
     const roles: RoleAvatarView[] = [];
     for (let index = 0; index < ROLE_COUNT; index += 1) {
-      const x = props.x + index * (roleWidth + ROLE_GAP);
-      const role = new RoleAvatarView({
-        scene: this._scene,
+      const x = index * (roleWidth + ROLE_GAP);
+      const role = this.createView(RoleAvatarView, {
         x,
-        y: props.y,
+        y: 0,
         width: roleWidth,
         height: roleHeight,
       });

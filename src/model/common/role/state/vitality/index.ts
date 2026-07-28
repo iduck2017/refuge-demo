@@ -18,6 +18,9 @@ export type VitalityProps = {
   offset?: number;
 };
 
+/**
+ * Tracks decorated vitality and removes roles that fail an exhaustion check.
+ */
 @useModel('vitality')
 export class VitalityModel extends Model {
   @useRole()
@@ -45,6 +48,11 @@ export class VitalityModel extends Model {
   @useMemo()
   public get current() { return this.maximum - this.offset; }
 
+  /**
+   * Create vitality state with optional maximum and depletion.
+   *
+   * @param props - Vitality configuration.
+   */
   constructor(props: VitalityProps = {}) {
     super();
     const maximum = props.maximum ?? 5;
@@ -52,6 +60,14 @@ export class VitalityModel extends Model {
     this._offset = props.offset ?? maximum;
   }
 
+  /**
+   * Remove the owning role when negative vitality fails a chance check.
+   *
+   * The removal chance increases by ten percentage points for each point below
+   * zero, capped at certainty.
+   *
+   * @returns Nothing.
+   */
   @useAction()
   public check() {
     const role = this.role;

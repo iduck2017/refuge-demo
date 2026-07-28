@@ -5,6 +5,9 @@ export type TaskPriorProps = {
   origin?: number;
 };
 
+/**
+ * Stores a task's baseline and current priority values.
+ */
 @useModel('task-prior')
 export class TaskPriorModel extends Model {
   @useState()
@@ -17,6 +20,11 @@ export class TaskPriorModel extends Model {
   @useMemo()
   public get current() { return this._current; }
 
+  /**
+   * Create priority state from optional baseline and current values.
+   *
+   * @param props - Priority configuration.
+   */
   constructor(props: TaskPriorProps = {}) {
     super();
     const origin = props.origin ?? 0;

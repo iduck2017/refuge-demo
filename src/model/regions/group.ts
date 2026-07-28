@@ -7,6 +7,9 @@ export type RegionsProps = {
   refuge?: RefugeModel;
 };
 
+/**
+ * Aggregates the named regions available to a game.
+ */
 @useModel('regions')
 export class RegionsModel extends Model {
   @useChild()
@@ -19,6 +22,11 @@ export class RegionsModel extends Model {
   @useMemo()
   public get forest() { return this._forest; }
 
+  /**
+   * Create a region collection from optional named regions.
+   *
+   * @param props - Region configuration.
+   */
   constructor(props: RegionsProps = {}) {
     super();
     this._refuge = props.refuge;
