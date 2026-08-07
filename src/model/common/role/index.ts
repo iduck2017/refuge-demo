@@ -7,27 +7,48 @@ import {
   useMemo,
   useRef,
 } from 'set-piece';
-import { ItemGroupModel } from '../item/group';
-import { RoleStateModel } from './state/index';
+import { AssetsModel } from '../asset/group';
+import { GatheringModel } from './gathering';
+import { SatietyModel } from './satiety';
+import { StrengthModel } from './strength';
 import { RoleTraitsModel } from './trait/group';
+import { VitalityModel } from './vitality';
 import type { TaskModel } from '../task/index';
 
 export type RoleProps = {
-  items?: ItemGroupModel;
-  state?: RoleStateModel;
+  assets?: AssetsModel;
+  gathering?: GatheringModel;
+  satiety?: SatietyModel;
+  strength?: StrengthModel;
   task?: TaskModel;
   traits?: RoleTraitsModel;
+  vitality?: VitalityModel;
 };
 
 /**
- * Base class for a playable role with inventory, traits, state, and task
- * assignment.
+ * Base class for a playable role with assets, attributes, states, traits, and
+ * task assignment.
  */
 export abstract class RoleModel extends Model {
   @useChild()
-  private _items: ItemGroupModel;
+  private _assets: AssetsModel;
   @useMemo()
-  public get items() { return this._items; }
+  public get assets() { return this._assets; }
+
+  @useChild()
+  private _gathering: GatheringModel;
+  @useMemo()
+  public get gathering() { return this._gathering; }
+
+  @useChild()
+  private _satiety: SatietyModel;
+  @useMemo()
+  public get satiety() { return this._satiety; }
+
+  @useChild()
+  private _strength: StrengthModel;
+  @useMemo()
+  public get strength() { return this._strength; }
 
   @useChild()
   private _traits: RoleTraitsModel;
@@ -46,21 +67,24 @@ export abstract class RoleModel extends Model {
   }
 
   @useChild()
-  private _state: RoleStateModel;
+  private _vitality: VitalityModel;
   @useMemo()
-  public get state() { return this._state; }
+  public get vitality() { return this._vitality; }
 
   /**
-   * Create a role with optional custom inventory, traits, task, and state.
+   * Create a role with optional assets, attributes, states, traits, and task.
    *
    * @param props - Role configuration.
    */
   constructor(props: RoleProps = {}) {
     super();
-    this._items = props.items ?? new ItemGroupModel();
+    this._assets = props.assets ?? new AssetsModel();
+    this._gathering = props.gathering ?? new GatheringModel();
+    this._satiety = props.satiety ?? new SatietyModel({ origin: 10 });
+    this._strength = props.strength ?? new StrengthModel();
     this._traits = props.traits ?? new RoleTraitsModel();
     this._task = props.task;
-    this._state = props.state ?? new RoleStateModel();
+    this._vitality = props.vitality ?? new VitalityModel({ origin: 5 });
   }
 
 }

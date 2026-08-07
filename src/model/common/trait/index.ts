@@ -5,7 +5,6 @@ import {
   useState,
 } from 'set-piece';
 import { GameModel, useGame } from '../game';
-import { TraitActivedDecor } from './use-trait-actived';
 
 export type TraitProps = {
   actived?: boolean;
@@ -20,7 +19,6 @@ export abstract class TraitModel extends Model {
   @useMemo()
   public get game() { return this._game; }
 
-  @useDecorProducer(() => TraitActivedDecor)
   @useState()
   protected _actived: boolean;
   @useMemo()

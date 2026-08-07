@@ -82,19 +82,19 @@ export class FlockModel extends Model {
   @useAction()
   protected dispose() {
     this.roles.forEach((role) => {
-      role.state.vitality.check();
+      role.vitality.check();
     });
   }
 
   /**
-   * Consume one nutrition unit for each active role.
+   * Consume one satiety unit for each active role.
    *
    * @returns Nothing.
    */
   @useAction()
   protected starve() {
     this.roles.forEach((role) => {
-      role.state.nutrition.consume();
+      role.satiety.consume();
     });
   }
 

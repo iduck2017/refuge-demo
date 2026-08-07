@@ -1,7 +1,7 @@
 import { useModel } from 'set-piece';
 import { TaskModel } from '../../common/task/index';
-import { TaskPriorModel } from '../../common/task/prior/index';
-import { RaspberryModel } from '../../items/raspberry/index';
+import { TaskPriorModel } from '../../common/task/prior';
+import { RaspberryModel } from '../../assets/raspberry/index';
 
 /**
  * Gives each assigned role one raspberry whenever the task proceeds.
@@ -25,7 +25,7 @@ export class WildFruitSeasonTaskModel extends TaskModel {
   public proceed() {
     this.roles.forEach((role) => {
       const raspberry = new RaspberryModel();
-      role.items.add(raspberry);
+      role.assets.add(raspberry);
     });
   }
 }

@@ -7,15 +7,15 @@ import {
   useMemo,
   useModel,
 } from 'set-piece';
-import { ItemGroupModel } from './item/group';
-import { BreadModel } from '../items/bread/index';
+import { AssetsModel } from './asset/group';
+import { BreadModel } from '../assets/bread/index';
 import { RegionsModel } from '../regions/group';
 import { TasksModel } from './task/group';
 import { FlockModel } from './role/flock';
 import { CalendarModel } from './calendar/index';
 import { EventsModel } from './event/group';
 import { RulesModel } from './rule/group';
-import { MeatModel } from '../items/meat';
+import { MeatModel } from '../assets/meat';
 
 /**
  * Aggregates all top-level domain collections and services for one game.
@@ -38,9 +38,9 @@ export class GameModel extends Model {
   public get flock() { return this._flock; }
 
   @useChild()
-  private _items: ItemGroupModel;
+  private _assets: AssetsModel;
   @useMemo()
-  public get items() { return this._items; }
+  public get assets() { return this._assets; }
 
   @useChild()
   private _regions: RegionsModel;
@@ -58,14 +58,14 @@ export class GameModel extends Model {
   public get tasks() { return this._tasks; }
 
   /**
-   * Create a game with its default calendar, collections, regions, and items.
+   * Create a game with its default calendar, collections, regions, and assets.
    */
   constructor() {
     super();
     this._calendar = new CalendarModel();
     this._events = new EventsModel();
     this._flock = new FlockModel();
-    this._items = new ItemGroupModel({
+    this._assets = new AssetsModel({
       items: [
         new BreadModel(),
         new MeatModel(),

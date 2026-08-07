@@ -5,8 +5,8 @@ import {
 } from '../../../calendar/use-time-proceed';
 import {
   useVitalityOffset,
-  VitalityOffsetDecor,
-} from '../../state/vitality/use-vitality-offset';
+} from '../../vitality';
+import { AttributeOffsetDecor } from '../../../attribute';
 import { RoleTraitModel } from '../index';
 import type { RoleTraitProps } from '../index';
 
@@ -25,21 +25,20 @@ export class StarvationModel extends RoleTraitModel {
   public get level() { return this._level; }
 
   /**
-   * Create starvation state with a level clamped between zero and three.
+   * Create starvation state with a non-negative, unbounded level.
    *
    * @param props - Starvation and activation configuration.
    */
   constructor(props: StarvationProps = {}) {
     super(props);
     const level = props.level ?? 0;
-    const minimum = Math.max(level, 0);
-    this._level = Math.min(minimum, 3);
+    this._level = Math.max(level, 0);
   }
 
   /**
    * Update starvation after each calendar advance.
    *
-   * Nourished roles reset to zero; depleted roles gain one clamped level.
+   * Nourished roles reset to zero; depleted roles gain one level.
    *
    * @param _event - Time event that triggered the update.
    * @returns Nothing.
@@ -47,25 +46,24 @@ export class StarvationModel extends RoleTraitModel {
   @useTimeProceed()
   protected starve(_event: TimeProceedEvent) {
     const role = this.role;
-    const nutrition = role?.state.nutrition;
-    if (!nutrition) return;
-    const current = nutrition.current;
+    const satiety = role?.satiety;
+    if (!satiety) return;
+    const current = satiety.current;
     if (current > 0) this._level = 0;
     if (current > 0) return;
-    const next = this._level + 1;
-    this._level = Math.min(next, 3);
+    this._level += 1;
   }
 
   /**
-   * Add starvation's penalty to decorated vitality depletion.
+   * Subtract the triangular starvation value from decorated vitality.
    *
    * @param decor - Mutable vitality offset decoration.
    * @returns Nothing.
    */
   @useVitalityOffset()
-  protected handleOffset(decor: VitalityOffsetDecor) {
+  protected handleOffset(decor: AttributeOffsetDecor) {
     const level = this.level;
-    const penalty = level === 3 ? 5 : level;
-    decor.add(penalty);
+    const offset = -level * (level + 1) / 2;
+    decor.add(offset);
   }
 }

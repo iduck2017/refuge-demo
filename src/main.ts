@@ -42,7 +42,7 @@ class Main extends Phaser.Scene {
     const game = new GameModel();
     const view = new AppView({
       scene: this,
-      items: game.items,
+      assets: game.assets,
     });
     this._app = new AppModel({ game, view });
     view.resize(zoom);

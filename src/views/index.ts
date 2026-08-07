@@ -113,6 +113,5 @@ export abstract class View extends Model {
       child.destroy();
     });
     this.container.destroy();
-    this.unlink();
   }
 }

@@ -41,19 +41,18 @@
 - Keep the application root model at `src/model/app.ts`.
 - Put shared model foundations, abstract models, group models, and reusable
   child models under `src/model/common/<domain>`.
-- Use a singular domain folder under `common`, such as `common/item`,
+- Use a singular domain folder under `common`, such as `common/asset`,
   `common/role`, and `common/task`.
 - Put concrete domain entities under a plural top-level category, such as
-  `items`, `regions`, and `rules`.
+  `assets`, `regions`, and `rules`.
 - Give each concrete entity or feature its own singular kebab-case folder, such
-  as `items/bread`, `regions/forest`, and `rules/wild-fruit-season`.
+  as `assets/bread`, `regions/forest`, and `rules/wild-fruit-season`.
 - Keep a feature-specific model inside its owning feature folder. For example,
   keep the event and task used only by `wild-fruit-season` beside that rule.
-- Mirror ownership with nested folders. For example, role state models belong
-  under `common/role/state`, and role trait models belong under
-  `common/role/trait`.
-- Give reusable capability models their own folders under the owning domain,
-  such as `common/item/edible/index.ts`.
+- Keep role attributes and states as flat files under `common/role`; role trait
+  models belong under `common/role/trait`.
+- Keep simple attribute and state specializations as flat files under the
+  owning domain, such as `common/asset/nutrition.ts`.
 - Use `index.ts` for the primary model of a folder.
 - Use `group.ts` for the model that owns a collection of the folder's primary
   models.
@@ -78,7 +77,7 @@
 - A game contains one events model.
 - A game contains one team.
 - A game contains one calendar.
-- A game starts with two bread items.
+- A game starts with two bread assets.
 - A calendar has 60 days per year.
 - Each calendar proceed advances half a day.
 - Each calendar proceed emits a time proceed event.
@@ -94,20 +93,27 @@
 - Forest is the second region on a map.
 - A team contains multiple roles.
 - A role contains one root traits model exposed as `traits`.
-- A role traits model contains one starvation trait.
+- A role traits model exposes starvation as a dedicated `starvation` child.
 - `RoleTraitModel` extends `TraitModel` and only adds the role relation.
 - A role can handle only one task at the same time.
 - A trait can contain multiple nested traits.
-- An item group has a size and rejects items when it is full.
-- An item has a name.
-- A role contains one item group.
+- An assets model has a size and rejects assets when it is full.
+- An asset has a name.
+- A role contains one assets model.
 - A role contains one strength.
+- A role contains one gathering attribute.
+- Strength, gathering, vitality, and task priority extend `AttributeModel`.
+- Role satiety and asset freshness extend `StateModel`.
+- Asset nutrition extends `AttributeModel`.
+- Numeric attributes expose `origin`, `offset`, and a derived `current` value.
+- Numeric states expose `origin`, `offset`, `loss`, and a derived `current`
+  value.
 - Starvation is implemented as a trait subtype.
-- Starvation consumes role nutrition on each time proceed and updates its level from remaining nutrition.
-- Region, item, role, trait, and task base models are abstract.
+- Starvation consumes role satiety on each time proceed and updates its level from remaining satiety.
+- Region, asset, role, trait, and task base models are abstract.
 
 ## Similar Practice References
 
-- Attribute implementation: `src/model/strength.ts`
-- State implementation: `src/model/starvation.ts`
-- Route helper implementation: `src/model/game/index.ts`
+- Attribute implementation: `src/model/common/attribute.ts`
+- State implementation: `src/model/common/state.ts`
+- Route helper implementation: `src/model/common/game.ts`

@@ -5,10 +5,6 @@ import {
 import { RoleModel, useRole } from '../index';
 import { FlockModel, useFlock } from '../flock';
 import { TraitModel, TraitProps } from '../../trait/index';
-import {
-  TraitActivedDecor,
-  useTraitActived,
-} from '../../trait/use-trait-actived';
 
 export type RoleTraitProps = TraitProps;
 

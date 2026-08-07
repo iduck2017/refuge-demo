@@ -1,13 +1,13 @@
 import Phaser from 'phaser';
 import { useChild, useView } from 'set-piece';
-import type { ItemGroupModel } from '../model/common/item/group';
+import type { AssetsModel } from '../model/common/asset/group';
 import { View } from './index';
 import type { ViewProps } from './index';
 import {
-  ITEM_GAP,
-  inventoryItemSize,
-  InventoryView,
-} from './inventory';
+  ASSET_GAP,
+  assetSize,
+  AssetsView,
+} from './assets';
 import { IllustrationView } from './illustration';
 import { flockHeight, FlockView } from './flock';
 import { WorkbenchView } from './workbench';
@@ -21,7 +21,7 @@ const PANEL_GAP = 8;
 export const APP_BACKGROUND = 'app-background';
 
 export type AppViewProps = ViewProps & {
-  items: ItemGroupModel;
+  assets: AssetsModel;
 };
 
 /**
@@ -35,7 +35,7 @@ export class AppView extends View {
   @useChild()
   private _flock: FlockView;
   @useChild()
-  private _items: InventoryView;
+  private _assets: AssetsView;
   @useChild()
   private _workbench: WorkbenchView;
 
@@ -46,7 +46,7 @@ export class AppView extends View {
   /**
    * Create the fixed-ratio stage and calculate all top-level panel bounds.
    *
-   * @param props - Root Scene and shared inventory model.
+   * @param props - Root Scene and shared assets model.
    */
   constructor(props: AppViewProps) {
     super(props);
@@ -56,11 +56,11 @@ export class AppView extends View {
     const flockWidth = contentWidth - illustrationWidth;
     const rightX = STAGE_PADDING + illustrationWidth + PANEL_GAP;
     const flockY = STAGE_PADDING;
-    const itemsY = flockY + flockHeight(flockWidth) + PANEL_GAP;
+    const assetsY = flockY + flockHeight(flockWidth) + PANEL_GAP;
     const contentBottom = STAGE_HEIGHT - STAGE_PADDING;
-    const itemsHeight = contentBottom - itemsY;
-    const itemSize = inventoryItemSize(flockWidth, itemsHeight);
-    const workbenchHeight = itemSize * 2 + ITEM_GAP;
+    const assetsHeight = contentBottom - assetsY;
+    const slotSize = assetSize(flockWidth, assetsHeight);
+    const workbenchHeight = slotSize * 2 + ASSET_GAP;
     const illustrationHeight = contentHeight - workbenchHeight - PANEL_GAP;
     const workbenchY = STAGE_PADDING + illustrationHeight + PANEL_GAP;
 
@@ -86,12 +86,12 @@ export class AppView extends View {
       y: flockY,
       width: flockWidth,
     });
-    this._items = this.createView(InventoryView, {
-      items: props.items,
+    this._assets = this.createView(AssetsView, {
+      assets: props.assets,
       x: rightX,
-      y: itemsY,
+      y: assetsY,
       width: flockWidth,
-      height: itemsHeight,
+      height: assetsHeight,
     });
   }
 

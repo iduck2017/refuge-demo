@@ -10,7 +10,7 @@ import {
 import { GameModel, useGame } from '../game';
 import type { RoleModel } from '../role/index';
 import { TaskTraitsModel } from './traits/group';
-import { TaskPriorModel } from './prior/index';
+import { TaskPriorModel } from './prior';
 
 export type TaskProps = {
   prior?: TaskPriorModel;

@@ -8,7 +8,7 @@ import {
 import type { TaskTraitModel } from './index';
 
 export type TaskTraitsProps = {
-  traits?: TaskTraitModel[];
+  items?: TaskTraitModel[];
 };
 
 /**
@@ -17,9 +17,9 @@ export type TaskTraitsProps = {
 @useModel('task-traits')
 export class TaskTraitsModel extends Model {
   @useChild()
-  private _traits: TaskTraitModel[];
+  private _items: TaskTraitModel[];
   @useMemo()
-  public get traits() { return [...this._traits]; }
+  public get items() { return [...this._items]; }
 
   /**
    * Create a task trait collection with optional initial traits.
@@ -28,7 +28,7 @@ export class TaskTraitsModel extends Model {
    */
   constructor(props: TaskTraitsProps = {}) {
     super();
-    this._traits = props.traits ?? [];
+    this._items = props.items ?? [];
   }
 
   /**
@@ -39,11 +39,11 @@ export class TaskTraitsModel extends Model {
    */
   @useAction()
   public add(trait: TaskTraitModel) {
-    const exists = this._traits.includes(trait);
+    const exists = this._items.includes(trait);
     const owned = trait.parent === this;
     if (exists && owned) return;
     if (exists || trait.parent) return;
-    this._traits.push(trait);
+    this._items.push(trait);
   }
 
   /**
@@ -54,9 +54,9 @@ export class TaskTraitsModel extends Model {
    */
   @useAction()
   public del(trait: TaskTraitModel) {
-    const index = this._traits.indexOf(trait);
+    const index = this._items.indexOf(trait);
     if (index < 0) return;
     if (trait.parent !== this) return;
-    this._traits.splice(index, 1);
+    this._items.splice(index, 1);
   }
 }
