@@ -1,5 +1,5 @@
 import { Event, useEventConsumer } from 'set-piece';
-import { TraitModel } from '../trait/index';
+import { TraitModel } from '../model/common/trait';
 
 /**
  * Signals that the calendar advanced by one half-day.

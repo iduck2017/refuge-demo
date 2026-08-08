@@ -4,8 +4,10 @@ import {
   useRef,
   useView,
 } from 'set-piece';
-import { AssetsChangedFrame } from '../model/common/asset/frame';
-import type { AssetsModel } from '../model/common/asset/group';
+import {
+  AssetsChangedFrame,
+  type AssetsModel,
+} from '../model/common/asset/group';
 import type { AssetModel } from '../model/common/asset/index';
 import { View } from './index';
 import type { ViewProps } from './index';
@@ -15,7 +17,7 @@ export const ASSET_GAP = 8;
 const ASSET_COUNT = 6;
 
 /**
- * Calculate the largest square asset size that fits the assets grid.
+ * Calculate the largest square asset size that fits the inventory grid.
  *
  * @param width - Available grid width.
  * @param height - Available grid height.
@@ -31,7 +33,7 @@ export function assetSize(width: number, height: number) {
   return Math.round(Math.min(widthSize, heightSize));
 }
 
-export type AssetsViewProps = ViewProps & {
+export type InventoryViewProps = ViewProps & {
   height: number;
   assets: AssetsModel;
   width: number;
@@ -40,10 +42,10 @@ export type AssetsViewProps = ViewProps & {
 };
 
 /**
- * Renders and synchronizes shared assets as a six-column slot grid.
+ * Renders and synchronizes shared assets as a six-column inventory grid.
  */
 @useView()
-export class AssetsView extends View {
+export class InventoryView extends View {
   @useRef()
   private _model?: AssetsModel;
 
@@ -51,11 +53,11 @@ export class AssetsView extends View {
   private _assets: AssetView[];
 
   /**
-   * Create a bottom-aligned asset grid and render its initial model contents.
+   * Create a bottom-aligned inventory grid and render its initial contents.
    *
    * @param props - Assets model, bounds, and local position.
    */
-  constructor(props: AssetsViewProps) {
+  constructor(props: InventoryViewProps) {
     super(props);
     this._model = props.assets;
     const columnGaps = ASSET_GAP * (ASSET_COUNT - 1);

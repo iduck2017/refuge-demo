@@ -1,7 +1,5 @@
 import {
   Model,
-  routeRegistry,
-  TypedPropertyDecorator,
   useAction,
   useChild,
   useMemo,
@@ -9,57 +7,57 @@ import {
 } from 'set-piece';
 import { RoleModel } from './index';
 
-export type FlockProps = {
-  roles?: RoleModel[];
+export type RolesProps = {
+  items?: RoleModel[];
 };
 
 /**
  * Owns the active roles and advances their survival state each turn.
  */
-@useModel('flock')
-export class FlockModel extends Model {
+@useModel('roles')
+export class RolesModel extends Model {
   @useChild()
-  private _roles: RoleModel[];
+  private _items: RoleModel[];
   @useMemo()
-  public get roles() { return [...this._roles]; }
+  public get items() { return [...this._items]; }
 
   /**
-   * Create a flock with optional initial roles.
+   * Create a role collection with optional initial items.
    *
    * @param props - Initial role collection.
    */
-  constructor(props: FlockProps = {}) {
+  constructor(props: RolesProps = {}) {
     super();
-    this._roles = props.roles ?? [];
+    this._items = props.items ?? [];
   }
 
   /**
-   * Add an unowned role if it is not already in the flock.
+   * Add an unowned role if it is not already in the collection.
    *
    * @param role - Role to add.
    * @returns Nothing.
    */
   @useAction()
   public add(role: RoleModel) {
-    const exists = this._roles.includes(role);
+    const exists = this._items.includes(role);
     const owned = role.parent === this;
     if (exists && owned) return;
     if (exists || role.parent) return;
-    this._roles.push(role);
+    this._items.push(role);
   }
 
   /**
-   * Remove a role owned by this flock.
+   * Remove a role owned by this collection.
    *
    * @param role - Role to remove.
    * @returns Nothing.
    */
   @useAction()
   public del(role: RoleModel) {
-    const index = this._roles.indexOf(role);
+    const index = this._items.indexOf(role);
     if (index < 0) return;
     if (role.parent !== this) return;
-    this._roles.splice(index, 1);
+    this._items.splice(index, 1);
   }
 
   /**
@@ -81,8 +79,8 @@ export class FlockModel extends Model {
    */
   @useAction()
   protected dispose() {
-    this.roles.forEach((role) => {
-      role.vitality.check();
+    this.items.forEach((role) => {
+      role.state.vitality.check();
     });
   }
 
@@ -93,8 +91,8 @@ export class FlockModel extends Model {
    */
   @useAction()
   protected starve() {
-    this.roles.forEach((role) => {
-      role.satiety.consume();
+    this.items.forEach((role) => {
+      role.state.satiety.consume();
     });
   }
 
@@ -104,21 +102,4 @@ export class FlockModel extends Model {
    * @returns Nothing.
    */
   protected dining() {}
-}
-
-/**
- * Create a property decorator that routes to the nearest flock ancestor.
- *
- * @returns Typed decorator for an optional `FlockModel` property.
- */
-export function useFlock<
-  I extends Model & Record<string, any>,
-  K extends string,
->(): I[K] extends FlockModel | undefined ?
-  TypedPropertyDecorator<I, K> :
-  TypedPropertyDecorator<never, never>
-{
-  return function(prototype: I, key: K) {
-    routeRegistry.register(prototype, key, () => FlockModel);
-  };
 }

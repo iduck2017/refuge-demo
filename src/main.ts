@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { AppModel } from './app';
-import { GameModel } from './model/common/game';
+import { GameModel } from './model/common/game/game';
 import {
   APP_BACKGROUND,
   AppView,

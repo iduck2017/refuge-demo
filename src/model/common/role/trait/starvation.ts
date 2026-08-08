@@ -2,23 +2,23 @@ import { useMemo, useModel, useState } from 'set-piece';
 import {
   TimeProceedEvent,
   useTimeProceed,
-} from '../../../calendar/use-time-proceed';
+} from '../../../../hooks/use-time-proceed';
 import {
   useVitalityOffset,
-} from '../../vitality';
-import { AttributeOffsetDecor } from '../../../attribute';
-import { RoleTraitModel } from '../index';
-import type { RoleTraitProps } from '../index';
+} from '../../../../hooks/use-vitality-offset';
+import { AttrOffsetDecor } from '../../attr';
+import { RoleTraitModel } from './index';
+import type { RoleTraitProps } from './index';
 
-export type StarvationProps = RoleTraitProps & {
+export type RoleStarvationProps = RoleTraitProps & {
   level?: number;
 };
 
 /**
  * Tracks consecutive starvation and converts it into vitality depletion.
  */
-@useModel('starvation')
-export class StarvationModel extends RoleTraitModel {
+@useModel('role-starvation')
+export class RoleStarvationModel extends RoleTraitModel {
   @useState()
   private _level: number;
   @useMemo()
@@ -29,7 +29,7 @@ export class StarvationModel extends RoleTraitModel {
    *
    * @param props - Starvation and activation configuration.
    */
-  constructor(props: StarvationProps = {}) {
+  constructor(props: RoleStarvationProps = {}) {
     super(props);
     const level = props.level ?? 0;
     this._level = Math.max(level, 0);
@@ -46,7 +46,7 @@ export class StarvationModel extends RoleTraitModel {
   @useTimeProceed()
   protected starve(_event: TimeProceedEvent) {
     const role = this.role;
-    const satiety = role?.satiety;
+    const satiety = role?.state.satiety;
     if (!satiety) return;
     const current = satiety.current;
     if (current > 0) this._level = 0;
@@ -61,7 +61,7 @@ export class StarvationModel extends RoleTraitModel {
    * @returns Nothing.
    */
   @useVitalityOffset()
-  protected handleOffset(decor: AttributeOffsetDecor) {
+  protected handleOffset(decor: AttrOffsetDecor) {
     const level = this.level;
     const offset = -level * (level + 1) / 2;
     decor.add(offset);

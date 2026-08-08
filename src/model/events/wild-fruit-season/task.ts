@@ -1,7 +1,7 @@
 import { useModel } from 'set-piece';
+import { RaspberryModel } from '../../assets/raspberry/index';
 import { TaskModel } from '../../common/task/index';
 import { TaskPriorModel } from '../../common/task/prior';
-import { RaspberryModel } from '../../assets/raspberry/index';
 
 /**
  * Gives each assigned role one raspberry whenever the task proceeds.

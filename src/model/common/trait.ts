@@ -1,10 +1,10 @@
 import {
   Model,
-  useDecorProducer,
   useMemo,
   useState,
 } from 'set-piece';
-import { GameModel, useGame } from '../game';
+import { useGameRoute } from '../../hooks/use-game-route';
+import { GameModel } from './game/game';
 
 export type TraitProps = {
   actived?: boolean;
@@ -14,7 +14,7 @@ export type TraitProps = {
  * Base class for game-routed behaviors that can be activated or disabled.
  */
 export abstract class TraitModel extends Model {
-  @useGame()
+  @useGameRoute()
   private _game?: GameModel;
   @useMemo()
   public get game() { return this._game; }

@@ -1,5 +1,5 @@
 import { Model, useChild, useMemo, useModel } from 'set-piece';
-import { GameModel } from './model/common/game';
+import { GameModel } from './model/common/game/game';
 import { AppView } from './views/app';
 
 export type AppProps = {

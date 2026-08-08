@@ -1,8 +1,8 @@
 import { useModel } from 'set-piece';
-import { AttributeModel } from '../attribute';
+import { AttrModel } from '../attr';
 
 /**
- * Represents a task's non-consumable priority attribute.
+ * Represents a task's non-consumable priority attr.
  */
 @useModel('task-prior')
-export class TaskPriorModel extends AttributeModel {}
+export class TaskPriorModel extends AttrModel {}

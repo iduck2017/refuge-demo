@@ -12,13 +12,13 @@ const ROLE_COUNT = 6;
  * @param width - Available row width.
  * @returns Rounded role-card height using a 3:4 width-to-height ratio.
  */
-export function flockHeight(width: number) {
+export function teamHeight(width: number) {
   const gaps = ROLE_GAP * (ROLE_COUNT - 1);
   const roleWidth = Math.floor((width - gaps) / ROLE_COUNT);
   return Math.round(roleWidth * 4 / 3);
 }
 
-export type FlockViewProps = ViewProps & {
+export type TeamViewProps = ViewProps & {
   width: number;
   x: number;
   y: number;
@@ -28,7 +28,7 @@ export type FlockViewProps = ViewProps & {
  * Displays a fixed row of role avatar slots using local Container coordinates.
  */
 @useView()
-export class FlockView extends View {
+export class TeamView extends View {
   @useChild()
   private _roles: RoleAvatarView[];
 
@@ -37,12 +37,12 @@ export class FlockView extends View {
    *
    * @param props - Local position and available row width.
    */
-  constructor(props: FlockViewProps) {
+  constructor(props: TeamViewProps) {
     super(props);
     const gaps = ROLE_GAP * (ROLE_COUNT - 1);
     const contentWidth = props.width - gaps;
     const roleWidth = Math.floor(contentWidth / ROLE_COUNT);
-    const roleHeight = flockHeight(props.width);
+    const roleHeight = teamHeight(props.width);
 
     const roles: RoleAvatarView[] = [];
     for (let index = 0; index < ROLE_COUNT; index += 1) {

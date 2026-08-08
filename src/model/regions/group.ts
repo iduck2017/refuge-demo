@@ -13,12 +13,12 @@ export type RegionsProps = {
 @useModel('regions')
 export class RegionsModel extends Model {
   @useChild()
-  private _refuge?: RefugeModel;
+  private _refuge: RefugeModel;
   @useMemo()
   public get refuge() { return this._refuge; }
 
   @useChild()
-  private _forest?: ForestModel;
+  private _forest: ForestModel;
   @useMemo()
   public get forest() { return this._forest; }
 
@@ -29,7 +29,7 @@ export class RegionsModel extends Model {
    */
   constructor(props: RegionsProps = {}) {
     super();
-    this._refuge = props.refuge;
-    this._forest = props.forest;
+    this._refuge = props.refuge ?? new RefugeModel();
+    this._forest = props.forest ?? new ForestModel();
   }
 }

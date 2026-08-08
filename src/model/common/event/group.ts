@@ -4,8 +4,8 @@ import {
   useChild,
   useMemo,
   useModel,
+  useStory,
 } from 'set-piece';
-import { GameModel, useGame } from '../game';
 import { EventModel } from './index';
 
 export type EventsProps = {
@@ -13,15 +13,10 @@ export type EventsProps = {
 };
 
 /**
- * Owns the game events currently produced by active rules.
+ * Owns the current gameplay events.
  */
 @useModel('events')
 export class EventsModel extends Model {
-  @useGame()
-  private _game?: GameModel;
-  @useMemo()
-  public get game() { return this._game; }
-
   @useChild()
   private _items: EventModel[];
   @useMemo()
@@ -38,14 +33,14 @@ export class EventsModel extends Model {
   }
 
   /**
-   * Replace current events with the results of checking all game rules.
+   * Remove all events from the previous time slice.
    *
    * @returns Nothing.
    */
+  @useStory()
   @useAction()
   public proceed() {
-    const items = this.game?.rules.check() ?? [];
-    this._items = [...items];
+    this._items = [];
   }
 
   /**

@@ -5,28 +5,28 @@ import {
   useMemo,
   useModel,
 } from 'set-piece';
-import type { TaskTraitModel } from './index';
+import type { TraitModel } from '../trait';
 
-export type TaskTraitsProps = {
-  items?: TaskTraitModel[];
+export type TraitsProps = {
+  items?: TraitModel[];
 };
 
 /**
- * Owns the traits that modify a task.
+ * Owns a collection of traits supplied by its parent entity.
  */
-@useModel('task-traits')
-export class TaskTraitsModel extends Model {
+@useModel('traits')
+export class TraitsModel extends Model {
   @useChild()
-  private _items: TaskTraitModel[];
+  private _items: TraitModel[];
   @useMemo()
   public get items() { return [...this._items]; }
 
   /**
-   * Create a task trait collection with optional initial traits.
+   * Create a trait collection with optional initial items.
    *
-   * @param props - Initial task traits.
+   * @param props - Initial traits.
    */
-  constructor(props: TaskTraitsProps = {}) {
+  constructor(props: TraitsProps = {}) {
     super();
     this._items = props.items ?? [];
   }
@@ -34,11 +34,11 @@ export class TaskTraitsModel extends Model {
   /**
    * Add an unowned trait if it is not already in the collection.
    *
-   * @param trait - Task trait to add.
+   * @param trait - Trait to add.
    * @returns Nothing.
    */
   @useAction()
-  public add(trait: TaskTraitModel) {
+  public add(trait: TraitModel) {
     const exists = this._items.includes(trait);
     const owned = trait.parent === this;
     if (exists && owned) return;
@@ -49,11 +49,11 @@ export class TaskTraitsModel extends Model {
   /**
    * Remove a trait owned by this collection.
    *
-   * @param trait - Task trait to remove.
+   * @param trait - Trait to remove.
    * @returns Nothing.
    */
   @useAction()
-  public del(trait: TaskTraitModel) {
+  public del(trait: TraitModel) {
     const index = this._items.indexOf(trait);
     if (index < 0) return;
     if (trait.parent !== this) return;

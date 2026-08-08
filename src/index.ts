@@ -1,18 +1,16 @@
 export { AppModel } from './app';
 export {
-  AttributeModel,
-  AttributeOffsetDecor,
-} from './model/common/attribute';
-export { CalendarModel } from './model/common/calendar/index';
+  AttrModel,
+  AttrOffsetDecor,
+} from './model/common/attr';
+export { CalendarModel } from './model/common/game/calendar';
 export { EventModel } from './model/common/event/index';
 export { EventsModel } from './model/common/event/group';
-export { GameModel } from './model/common/game';
+export { GameModel } from './model/common/game/game';
 export { AssetsModel } from './model/common/asset/group';
 export { RegionsModel } from './model/regions/group';
-export { RuleModel } from './model/common/rule/index';
-export { RulesModel } from './model/common/rule/group';
 export { TasksModel } from './model/common/task/group';
-export { FlockModel } from './model/common/role/flock';
+export { RolesModel } from './model/common/role/group';
 export { BreadModel } from './model/assets/bread/index';
 export { FruitBasketModel } from './model/assets/fruit-basket/index';
 export { AssetFreshnessModel } from './model/common/asset/freshness';
@@ -24,22 +22,19 @@ export { RegionModel } from './model/regions/index';
 export { ForestModel } from './model/regions/forest/index';
 export { RefugeModel } from './model/regions/refuge/index';
 export { RoleModel } from './model/common/role/index';
-export { GatheringModel } from './model/common/role/gathering';
-export { StrengthModel } from './model/common/role/strength';
-export { SatietyModel } from './model/common/role/satiety';
-export { VitalityModel } from './model/common/role/vitality';
-export { RoleTraitsModel } from './model/common/role/trait/group';
+export { RoleAttrsModel } from './model/common/role/attrs/index';
+export { RoleGatheringModel } from './model/common/role/attrs/gathering';
+export { RoleStrengthModel } from './model/common/role/attrs/strength';
+export { RoleSatietyModel } from './model/common/role/satiety';
+export { RoleStateModel } from './model/common/role/state/index';
+export { RoleVitalityModel } from './model/common/role/vitality';
+export { TraitsModel } from './model/common/trait/group';
 export { TaskPriorModel } from './model/common/task/prior';
-export { WildFruitSeasonEventModel } from './model/rules/wild-fruit-season/event';
-export { WildFruitSeasonRuleModel } from './model/rules/wild-fruit-season/index';
-export { WildFruitSeasonTaskModel } from './model/rules/wild-fruit-season/task';
+export { WildFruitSeasonEventModel } from './model/events/wild-fruit-season/index';
+export { WildFruitSeasonTraitModel } from './model/events/wild-fruit-season/trait';
+export { WildFruitSeasonTaskModel } from './model/events/wild-fruit-season/task';
 export { TaskModel } from './model/common/task/index';
-export { TaskTraitsModel } from './model/common/task/traits/group';
 export { TaskTraitModel } from './model/common/task/traits/index';
-export { TraitModel } from './model/common/trait/index';
+export { TraitModel } from './model/common/trait';
 export { RoleTraitModel } from './model/common/role/trait/index';
-export { StarvationModel } from './model/common/role/trait/starvation/index';
-export {
-  StateOffsetDecor,
-  StateModel,
-} from './model/common/state';
+export { RoleStarvationModel } from './model/common/role/trait/starvation';

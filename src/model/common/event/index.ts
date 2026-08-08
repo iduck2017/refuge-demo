@@ -3,7 +3,8 @@ import {
   useMemo,
   useState,
 } from 'set-piece';
-import { GameModel, useGame } from '../game';
+import { useGameRoute } from '../../../hooks/use-game-route';
+import { GameModel } from '../game/game';
 
 export type EventProps = {
   desc?: string;
@@ -14,7 +15,7 @@ export type EventProps = {
  * Base class for descriptive game events routed to their owning game.
  */
 export abstract class EventModel extends Model {
-  @useGame()
+  @useGameRoute()
   private _game?: GameModel;
   @useMemo()
   public get game() { return this._game; }

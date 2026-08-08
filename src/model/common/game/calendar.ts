@@ -6,8 +6,9 @@ import {
   useState,
   useStory,
 } from 'set-piece';
-import { GameModel, useGame } from '../game';
-import { TimeProceedEvent } from './use-time-proceed';
+import { useGameRoute } from '../../../hooks/use-game-route';
+import { GameModel } from './game';
+import { TimeProceedEvent } from '../../../hooks/use-time-proceed';
 
 export enum CalendarTime {
   Morning = 'morning',
@@ -25,7 +26,7 @@ export enum CalendarSeason {
  */
 @useModel('calendar')
 export class CalendarModel extends Model {
-  @useGame()
+  @useGameRoute()
   private _game?: GameModel;
   @useMemo()
   public get game() { return this._game; }
@@ -75,10 +76,10 @@ export class CalendarModel extends Model {
    */
   public proceed() {
     const game = this.game;
-    game?.flock.proceed();
+    game?.events.proceed();
+    game?.roles.proceed();
     game?.tasks.proceed();
     this._proceed();
-    game?.events.proceed();
   }
 
   /**

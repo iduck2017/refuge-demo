@@ -19,18 +19,18 @@ export class WildFruitSeasonEventModel extends EventModel {
   }
 
   /**
-   * Create a harvesting task and assign the supplied roles to it.
+   * Create a harvesting task and assign one role to it.
    *
-   * @param roles - Roles selected for wild fruit harvesting.
+   * @param role - Role selected for wild fruit harvesting.
    * @returns Created task, or `undefined` when the event is not mounted.
    */
   @useAction()
-  public assign(roles: RoleModel[]) {
+  public assign(role: RoleModel) {
     const game = this.game;
     if (!game) return;
     const task = new WildFruitSeasonTaskModel();
     game.tasks.add(task);
-    task.bind(roles);
+    task.bind(role);
     return task;
   }
 }

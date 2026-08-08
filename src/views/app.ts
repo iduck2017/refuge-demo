@@ -6,10 +6,10 @@ import type { ViewProps } from './index';
 import {
   ASSET_GAP,
   assetSize,
-  AssetsView,
-} from './assets';
+  InventoryView,
+} from './inventory';
 import { IllustrationView } from './illustration';
-import { flockHeight, FlockView } from './flock';
+import { teamHeight, TeamView } from './team';
 import { WorkbenchView } from './workbench';
 
 export const STAGE_HEIGHT = 540;
@@ -33,9 +33,9 @@ export class AppView extends View {
   @useChild()
   private _illustration: IllustrationView;
   @useChild()
-  private _flock: FlockView;
+  private _team: TeamView;
   @useChild()
-  private _assets: AssetsView;
+  private _inventory: InventoryView;
   @useChild()
   private _workbench: WorkbenchView;
 
@@ -53,13 +53,13 @@ export class AppView extends View {
     const contentWidth = STAGE_WIDTH - STAGE_PADDING * 2 - PANEL_GAP;
     const contentHeight = STAGE_HEIGHT - STAGE_PADDING * 2;
     const illustrationWidth = Math.round(contentWidth * 0.4);
-    const flockWidth = contentWidth - illustrationWidth;
+    const teamWidth = contentWidth - illustrationWidth;
     const rightX = STAGE_PADDING + illustrationWidth + PANEL_GAP;
-    const flockY = STAGE_PADDING;
-    const assetsY = flockY + flockHeight(flockWidth) + PANEL_GAP;
+    const teamY = STAGE_PADDING;
+    const inventoryY = teamY + teamHeight(teamWidth) + PANEL_GAP;
     const contentBottom = STAGE_HEIGHT - STAGE_PADDING;
-    const assetsHeight = contentBottom - assetsY;
-    const slotSize = assetSize(flockWidth, assetsHeight);
+    const inventoryHeight = contentBottom - inventoryY;
+    const slotSize = assetSize(teamWidth, inventoryHeight);
     const workbenchHeight = slotSize * 2 + ASSET_GAP;
     const illustrationHeight = contentHeight - workbenchHeight - PANEL_GAP;
     const workbenchY = STAGE_PADDING + illustrationHeight + PANEL_GAP;
@@ -81,17 +81,17 @@ export class AppView extends View {
       width: illustrationWidth,
       height: workbenchHeight,
     });
-    this._flock = this.createView(FlockView, {
+    this._team = this.createView(TeamView, {
       x: rightX,
-      y: flockY,
-      width: flockWidth,
+      y: teamY,
+      width: teamWidth,
     });
-    this._assets = this.createView(AssetsView, {
+    this._inventory = this.createView(InventoryView, {
       assets: props.assets,
       x: rightX,
-      y: assetsY,
-      width: flockWidth,
-      height: assetsHeight,
+      y: inventoryY,
+      width: teamWidth,
+      height: inventoryHeight,
     });
   }
 

@@ -4,6 +4,7 @@
 - Do not deploy the project unless the user explicitly asks for it.
 - Do not start development servers or runtime processes unless the user explicitly asks for it.
 - When dependencies, deployment, or server startup may be needed, explain the required commands and wait for the user to run or approve them.
+- Before editing the project for the first time, read the set-piece README at `../set-piece/readme.md`.
 
 ## Code Style Rules
 
@@ -32,26 +33,33 @@
 - Do not declare explicit return types on getters; array getters must return a shallow copy with `[...value]`.
 - Decorate every getter with `@useMemo()` so dependency collection does not break across getter calls.
 - Wrap event listeners as reusable hooks when traits need to consume those events.
+- Keep every custom `useXxx` hook in a `src/hooks/use-xxx.ts` module.
+- Name ancestor route hooks `useXxxRoute` and their files `use-xxx-route.ts`.
+- Route hooks import their runtime target model constructors from `src/index.ts`
+  instead of source modules to avoid direct circular initialization.
 - Prefer `protected` over `private` for decor, event, and frame listener methods.
 - Decorate Phaser game-object properties owned by views with `@useGraph()`.
 - Write simple getters on one line.
 
 ## Model File Organization Rules
 
+- Every TypeScript file under `src/model` must define at least one model class.
+- Prefix every non-entity model with its owning entity name, such as
+  `AssetFreshnessModel` for an asset's freshness.
 - Keep the application root model at `src/model/app.ts`.
 - Put shared model foundations, abstract models, group models, and reusable
   child models under `src/model/common/<domain>`.
 - Use a singular domain folder under `common`, such as `common/asset`,
   `common/role`, and `common/task`.
 - Put concrete domain entities under a plural top-level category, such as
-  `assets`, `regions`, and `rules`.
+  `assets`, `events`, and `regions`.
 - Give each concrete entity or feature its own singular kebab-case folder, such
-  as `assets/bread`, `regions/forest`, and `rules/wild-fruit-season`.
+  as `assets/bread`, `events/wild-fruit-season`, and `regions/forest`.
 - Keep a feature-specific model inside its owning feature folder. For example,
-  keep the event and task used only by `wild-fruit-season` beside that rule.
-- Keep role attributes and states as flat files under `common/role`; role trait
+  keep the trait and task used only by `wild-fruit-season` beside that event.
+- Keep models owned by `RoleAttrsModel` under `common/role/attrs`; role trait
   models belong under `common/role/trait`.
-- Keep simple attribute and state specializations as flat files under the
+- Keep simple attr and state specializations as flat files under the
   owning domain, such as `common/asset/nutrition.ts`.
 - Use `index.ts` for the primary model of a folder.
 - Use `group.ts` for the model that owns a collection of the folder's primary
@@ -75,7 +83,7 @@
 - A game contains one regions model.
 - A game contains one tasks model.
 - A game contains one events model.
-- A game contains one team.
+- A game contains one roles model exposed as `roles`.
 - A game contains one calendar.
 - A game starts with two bread assets.
 - A calendar has 60 days per year.
@@ -85,27 +93,36 @@
 - A regions model contains one refuge and one forest.
 - A tasks model contains multiple tasks.
 - A task controls availability through its actived state.
-- A task contains one prior attribute.
+- A task contains one prior attr.
 - Tasks update availability by consuming time proceed events.
 - An event model represents a gameplay event, not a code-level event.
 - Sloe can be harvested during spring days 15 through 25.
 - Refuge is the first region on a map.
 - Forest is the second region on a map.
-- A team contains multiple roles.
+- A forest contains one root traits model exposed as `traits`.
+- A forest creates a `TraitsModel` containing wild fruit season.
+- Wild fruit season consumes time proceed events and adds its gameplay event
+  during spring days 15 through 25.
+- A roles model exposes its role collection as `items`.
+- A role has a name and description.
+- A role contains one root attrs model exposed as `attrs`.
+- A role attrs model contains one gathering model and one strength model.
+- A role contains one root state model exposed as `state`.
+- A role state model contains one satiety model and one vitality model.
 - A role contains one root traits model exposed as `traits`.
-- A role traits model exposes starvation as a dedicated `starvation` child.
+- A role creates a `TraitsModel` with starvation first, followed by traits
+  supplied through `RoleProps`.
+- A `TraitsModel` never adds defaults; its parent model controls all input.
 - `RoleTraitModel` extends `TraitModel` and only adds the role relation.
 - A role can handle only one task at the same time.
 - A trait can contain multiple nested traits.
 - An assets model has a size and rejects assets when it is full.
 - An asset has a name.
 - A role contains one assets model.
-- A role contains one strength.
-- A role contains one gathering attribute.
-- Strength, gathering, vitality, and task priority extend `AttributeModel`.
-- Role satiety and asset freshness extend `StateModel`.
-- Asset nutrition extends `AttributeModel`.
-- Numeric attributes expose `origin`, `offset`, and a derived `current` value.
+- Strength, gathering, vitality, and task priority extend `AttrModel`.
+- Role satiety and asset freshness implement their numeric state directly.
+- Asset nutrition extends `AttrModel`.
+- Numeric attrs expose `origin`, `offset`, and a derived `current` value.
 - Numeric states expose `origin`, `offset`, `loss`, and a derived `current`
   value.
 - Starvation is implemented as a trait subtype.
@@ -114,6 +131,7 @@
 
 ## Similar Practice References
 
-- Attribute implementation: `src/model/common/attribute.ts`
-- State implementation: `src/model/common/state.ts`
-- Route helper implementation: `src/model/common/game.ts`
+- Attr implementation: `src/model/common/attr.ts`
+- Satiety implementation: `src/model/common/role/satiety.ts`
+- Freshness implementation: `src/model/common/asset/freshness.ts`
+- Route hook implementation: `src/hooks/use-game-route.ts`

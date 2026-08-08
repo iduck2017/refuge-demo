@@ -1,21 +1,17 @@
 import {
   Model,
-  routeRegistry,
-  TypedPropertyDecorator,
-  useAction,
   useChild,
   useMemo,
   useModel,
 } from 'set-piece';
-import { AssetsModel } from './asset/group';
-import { BreadModel } from '../assets/bread/index';
-import { RegionsModel } from '../regions/group';
-import { TasksModel } from './task/group';
-import { FlockModel } from './role/flock';
-import { CalendarModel } from './calendar/index';
-import { EventsModel } from './event/group';
-import { RulesModel } from './rule/group';
-import { MeatModel } from '../assets/meat';
+import { AssetsModel } from '../asset/group';
+import { BreadModel } from '../../assets/bread/index';
+import { RegionsModel } from '../../regions/group';
+import { TasksModel } from '../task/group';
+import { RolesModel } from '../role/group';
+import { CalendarModel } from './calendar';
+import { EventsModel } from '../event/group';
+import { MeatModel } from '../../assets/meat';
 
 /**
  * Aggregates all top-level domain collections and services for one game.
@@ -33,9 +29,9 @@ export class GameModel extends Model {
   public get events() { return this._events; }
 
   @useChild()
-  private _flock: FlockModel;
+  private _roles: RolesModel;
   @useMemo()
-  public get flock() { return this._flock; }
+  public get roles() { return this._roles; }
 
   @useChild()
   private _assets: AssetsModel;
@@ -46,11 +42,6 @@ export class GameModel extends Model {
   private _regions: RegionsModel;
   @useMemo()
   public get regions() { return this._regions; }
-
-  @useChild()
-  private _rules: RulesModel;
-  @useMemo()
-  public get rules() { return this._rules; }
 
   @useChild()
   private _tasks: TasksModel;
@@ -64,7 +55,7 @@ export class GameModel extends Model {
     super();
     this._calendar = new CalendarModel();
     this._events = new EventsModel();
-    this._flock = new FlockModel();
+    this._roles = new RolesModel();
     this._assets = new AssetsModel({
       items: [
         new BreadModel(),
@@ -72,25 +63,7 @@ export class GameModel extends Model {
       ],
     });
     this._regions = new RegionsModel();
-    this._rules = new RulesModel();
     this._tasks = new TasksModel();
   }
 
-}
-
-/**
- * Create a property decorator that routes to the nearest game ancestor.
- *
- * @returns Typed decorator for an optional `GameModel` property.
- */
-export function useGame<
-  I extends Model & Record<string, any>,
-  K extends string,
->(): I[K] extends GameModel | undefined ?
-  TypedPropertyDecorator<I, K> :
-  TypedPropertyDecorator<never, never>
-{
-  return function(prototype: I, key: K) {
-    routeRegistry.register(prototype, key, () => GameModel);
-  };
 }

@@ -1,26 +1,27 @@
 import {
-  Model,
   useMemo,
 } from 'set-piece';
-import { RoleModel, useRole } from '../index';
-import { FlockModel, useFlock } from '../flock';
-import { TraitModel, TraitProps } from '../../trait/index';
+import { useRoleRoute } from '../../../../hooks/use-role-route';
+import { useRolesRoute } from '../../../../hooks/use-roles-route';
+import { RoleModel } from '../index';
+import { RolesModel } from '../group';
+import { TraitModel, TraitProps } from '../../trait';
 
 export type RoleTraitProps = TraitProps;
 
 /**
- * Base class for traits routed to their owning role and flock.
+ * Base class for traits routed to their owning role and roles collection.
  */
 export abstract class RoleTraitModel extends TraitModel {
-  @useRole()
+  @useRoleRoute()
   private _role?: RoleModel;
   @useMemo()
   public get role() { return this._role; }
 
-  @useFlock()
-  private _flock?: FlockModel;
+  @useRolesRoute()
+  private _roles?: RolesModel;
   @useMemo()
-  public get flock() { return this._flock; }
+  public get roles() { return this._roles; }
 
   /**
    * Create a role trait with optional activation state.

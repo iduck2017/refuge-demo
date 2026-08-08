@@ -1,28 +1,28 @@
 import {
   Model,
-  routeRegistry,
-  TypedPropertyDecorator,
   useAction,
   useChild,
   useMemo,
   useRef,
 } from 'set-piece';
-import { GameModel, useGame } from '../game';
+import { useGameRoute } from '../../../hooks/use-game-route';
+import { GameModel } from '../game/game';
 import type { RoleModel } from '../role/index';
-import { TaskTraitsModel } from './traits/group';
+import { TraitsModel } from '../trait/group';
 import { TaskPriorModel } from './prior';
+import type { TaskTraitModel } from './traits/index';
 
 export type TaskProps = {
   prior?: TaskPriorModel;
   roles?: RoleModel[];
-  traits?: TaskTraitsModel;
+  traits?: TaskTraitModel[];
 };
 
 /**
  * Base class for work that can bind roles and advance each turn.
  */
 export abstract class TaskModel extends Model {
-  @useGame()
+  @useGameRoute()
   private _game?: GameModel;
   @useMemo()
   public get game() { return this._game; }
@@ -33,7 +33,7 @@ export abstract class TaskModel extends Model {
   public get roles() { return [...this._roles ?? []]; }
 
   @useChild()
-  private _traits: TaskTraitsModel;
+  private _traits: TraitsModel;
   @useMemo()
   public get traits() { return this._traits; }
 
@@ -50,7 +50,9 @@ export abstract class TaskModel extends Model {
   constructor(props: TaskProps = {}) {
     super();
     this._roles = props.roles ?? [];
-    this._traits = props.traits ?? new TaskTraitsModel();
+    this._traits = new TraitsModel({
+      items: props.traits ?? [],
+    });
     this._prior = props.prior ?? new TaskPriorModel();
   }
 
@@ -62,53 +64,32 @@ export abstract class TaskModel extends Model {
   public abstract proceed(): void;
 
   /**
-   * Assign every currently unoccupied role in the input collection.
+   * Assign an unoccupied role to this task.
    *
-   * @param roles - Roles to assign.
+   * @param role - Role to assign.
    * @returns Nothing.
    */
   @useAction()
-  public bind(roles: RoleModel[]) {
+  public bind(role: RoleModel) {
     if (!this._roles) this._roles = [];
-    roles.forEach((role) => {
-      if (role.task) return;
-      const exists = this._roles?.includes(role);
-      if (!exists) this._roles?.push(role);
-      role.task = this;
-    });
+    if (role.task) return;
+    const exists = this._roles.includes(role);
+    if (!exists) this._roles.push(role);
+    role.task = this;
   }
 
   /**
-   * Remove this task from each matching role in the input collection.
+   * Unassign a role from this task.
    *
-   * @param roles - Roles to unassign.
+   * @param role - Role to unassign.
    * @returns Nothing.
    */
   @useAction()
-  public unbind(roles: RoleModel[]) {
+  public unbind(role: RoleModel) {
     if (!this._roles) this._roles = [];
-    roles.forEach((role) => {
-      if (role.task !== this) return;
-      const index = this._roles?.indexOf(role) ?? -1;
-      if (index >= 0) this._roles?.splice(index, 1);
-      role.task = undefined;
-    });
+    if (role.task !== this) return;
+    const index = this._roles.indexOf(role);
+    if (index >= 0) this._roles.splice(index, 1);
+    role.task = undefined;
   }
-}
-
-/**
- * Create a property decorator that routes to the nearest task ancestor.
- *
- * @returns Typed decorator for an optional `TaskModel` property.
- */
-export function useTask<
-  I extends Model & Record<string, any>,
-  K extends string,
->(): I[K] extends TaskModel | undefined ?
-  TypedPropertyDecorator<I, K> :
-  TypedPropertyDecorator<never, never>
-{
-  return function(prototype: I, key: K) {
-    routeRegistry.register(prototype, key, () => TaskModel);
-  };
 }

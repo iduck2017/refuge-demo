@@ -6,26 +6,26 @@ import {
   useState,
 } from 'set-piece';
 
-export type AttributeProps = {
+export type AttrProps = {
   offset?: number;
   origin?: number;
 };
 
 /**
- * Numeric decoration applied to an attribute offset.
+ * Numeric decoration applied to an attr offset.
  */
-export class AttributeOffsetDecor extends NumDecor {}
+export class AttrOffsetDecor extends NumDecor {}
 
 /**
- * Base class for numeric attributes that are modified but not consumed.
+ * Base class for numeric attrs that are modified but not consumed.
  */
-export abstract class AttributeModel extends Model {
+export abstract class AttrModel extends Model {
   @useState()
   protected readonly _origin: number;
   @useMemo()
   public get origin() { return this._origin; }
 
-  @useDecorProducer(() => AttributeOffsetDecor)
+  @useDecorProducer(() => AttrOffsetDecor)
   @useState()
   protected readonly _offset: number;
   @useMemo()
@@ -37,11 +37,11 @@ export abstract class AttributeModel extends Model {
   }
 
   /**
-   * Create an attribute from optional origin and offset values.
+   * Create an attr from optional origin and offset values.
    *
-   * @param props - Attribute configuration.
+   * @param props - Attr configuration.
    */
-  constructor(props: AttributeProps = {}) {
+  constructor(props: AttrProps = {}) {
     super();
     this._origin = props.origin ?? 0;
     this._offset = props.offset ?? 0;
